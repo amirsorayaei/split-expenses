@@ -1,8 +1,10 @@
 import { ReactElement, ReactNode } from "react";
-
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { Provider } from "react-redux";
+
+import { store } from "@/redux/store";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -25,7 +27,9 @@ function Split(props: SplitAppProps) {
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
       </Head>
-      {getLayout(<Component {...pageProps} />)}
+      <Provider store={store}>
+        {getLayout(<Component {...pageProps} />)}
+      </Provider>
     </>
   );
 }
