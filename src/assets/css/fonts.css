@@ -1,0 +1,5 @@
+@font-face {
+  font-family: "TFN"; /* TT Firs Neue Medium */
+  src: url(../fonts/tt-firs-neue/woff/TTFirsNeue-Medium.woff) format("woff"),
+    url(../fonts/tt-firs-neue/ttf/TTFirsNeue-Medium.ttf) format("truetype");
+}

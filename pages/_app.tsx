@@ -3,19 +3,27 @@ import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Provider } from "react-redux";
+import { CacheProvider, EmotionCache } from "@emotion/react";
+
+import "../src/assets/css/fonts.css";
 
 import { store } from "@/redux/store";
+import createEmotionCache from "@/theme/createEmotionCache";
+import ThemeProvider from "@/theme/ThemeProvider";
+
+const clientSideEmotionCache = createEmotionCache();
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
 interface SplitAppProps extends AppProps {
+  emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
 }
 
 function Split(props: SplitAppProps) {
-  const { Component, pageProps } = props;
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -27,9 +35,11 @@ function Split(props: SplitAppProps) {
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
       </Head>
-      <Provider store={store}>
-        {getLayout(<Component {...pageProps} />)}
-      </Provider>
+      <ThemeProvider>
+        <Provider store={store}>
+          {getLayout(<Component {...pageProps} />)}
+        </Provider>
+      </ThemeProvider>
     </>
   );
 }
