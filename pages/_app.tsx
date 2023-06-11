@@ -5,7 +5,7 @@ import Head from "next/head";
 import { Provider } from "react-redux";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 
-import "../src/assets/css/fonts.css";
+import "@/assets/css/fonts.css";
 
 import { store } from "@/redux/store";
 import createEmotionCache from "@/theme/createEmotionCache";
@@ -27,7 +27,7 @@ function Split(props: SplitAppProps) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <>
+    <CacheProvider value={emotionCache}>
       <Head>
         <title>Split</title>
         <meta
@@ -40,7 +40,7 @@ function Split(props: SplitAppProps) {
           {getLayout(<Component {...pageProps} />)}
         </Provider>
       </ThemeProvider>
-    </>
+    </CacheProvider>
   );
 }
 
