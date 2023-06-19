@@ -1,16 +1,16 @@
 import { alpha, createTheme, darken } from "@mui/material";
 
 const themeColors = {
-  primary: "#0B2447",
-  primaryAlt: "#19376D",
-  secondary: "#576CBC",
+  primary: "#0F0F0F",
+  primaryAlt: "#121212",
+  secondary: "#5D8D7B",
   success: "#57CA22",
   warning: "#FFA319",
   error: "#FF1943",
   info: "#33C2FF", // #A5D7E8 Maybe this one - Try it
   black: "#252525",
-  white: "#ffffff",
-  trueWhite: "#ffffff",
+  white: "#FFFFFF",
+  trueWhite: "#FFFFFF",
 };
 
 const colors = {
@@ -49,10 +49,10 @@ const colors = {
   },
   layout: {
     general: {
-      bodyBg: "#1C1C1C",
+      bodyBg: themeColors.primary,
     },
     sidebar: {
-      background: themeColors.primaryAlt,
+      background: themeColors.primary,
       textColor: themeColors.secondary,
       dividerBg: "#1d1818",
       menuItemColor: "#A3A3A3",
@@ -102,6 +102,12 @@ const colors = {
     main: themeColors.primary,
     dark: darken(themeColors.primary, 0.2),
   },
+  primaryAlt: {
+    lighter: alpha(themeColors.primaryAlt, 0.85),
+    light: alpha(themeColors.primaryAlt, 0.3),
+    main: themeColors.primaryAlt,
+    dark: darken(themeColors.primaryAlt, 0.2),
+  },
   success: {
     lighter: alpha(themeColors.success, 0.85),
     light: alpha(themeColors.success, 0.3),
@@ -128,7 +134,7 @@ const colors = {
   },
 };
 
-export const DarkTheme = createTheme({
+export const NavyTheme = createTheme({
   // direction: i18n.dir(),
   colors: {
     gradients: {
@@ -220,11 +226,10 @@ export const DarkTheme = createTheme({
     },
   },
   general: {
-    reactFrameworkColor: "#00D8FF",
-    borderRadiusSm: "6px",
-    borderRadius: "10px",
-    borderRadiusLg: "12px",
-    borderRadiusXl: "16px",
+    borderRadiusSm: "20px",
+    borderRadius: "28px",
+    borderRadiusLg: "32px",
+    borderRadiusXl: "40px",
   },
   sidebar: {
     background: colors.layout.sidebar.background,
@@ -238,7 +243,8 @@ export const DarkTheme = createTheme({
     menuItemIconColorActive: colors.layout.sidebar.menuItemIconColorActive,
     menuItemHeadingColor: colors.layout.sidebar.menuItemHeadingColor,
     boxShadow: "1px 0 0 #413333",
-    width: "290px",
+    parentWidth: "290px",
+    actualWidth: "250px",
   },
   header: {
     height: "80px",
@@ -247,7 +253,7 @@ export const DarkTheme = createTheme({
     textColor: colors.secondary.main,
   },
   palette: {
-    mode: "light",
+    mode: "dark",
     common: {
       black: colors.alpha.black[100],
       white: colors.alpha.white[100],
@@ -289,13 +295,13 @@ export const DarkTheme = createTheme({
       contrastText: themeColors.trueWhite,
     },
     text: {
-      primary: colors.alpha.black[100],
-      secondary: colors.alpha.black[70],
-      disabled: colors.alpha.black[50],
+      primary: colors.alpha.white[100],
+      secondary: colors.alpha.white[70],
+      disabled: colors.alpha.white[50],
     },
     background: {
-      paper: colors.primary.main,
-      default: colors.primary.main,
+      paper: colors.primaryAlt.main,
+      default: colors.layout.general.bodyBg,
     },
   },
   typography: {
@@ -312,7 +318,6 @@ export const DarkTheme = createTheme({
       fontWeight: 700,
       fontSize: 25,
       lineHeight: 1.4,
-      color: colors.alpha.black[100],
     },
     h4: {
       fontWeight: 700,
@@ -336,29 +341,85 @@ export const DarkTheme = createTheme({
     },
     caption: {
       fontSize: 13,
-      textTransform: "uppercase",
-      color: colors.alpha.black[50],
     },
     subtitle1: {
       fontSize: 14,
-      color: colors.alpha.black[70],
     },
     subtitle2: {
       fontWeight: 400,
       fontSize: 15,
-      color: colors.alpha.black[50],
     },
     overline: {
       fontSize: 13,
       fontWeight: 700,
-      textTransform: "uppercase",
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        "::-webkit-scrollbar": {
+          width: 0,
+          height: 0,
+        },
+        "html, body": {
+          width: "100%",
+          height: "100%",
+        },
+        body: {
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100%",
+          width: "100%",
+          flex: 1,
+        },
+        "#__next": {
+          width: "100%",
+          display: "flex",
+          flex: 1,
+          flexDirection: "column",
+        },
+        html: {
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100%",
+          width: "100%",
+          MozOsxFontSmoothing: "grayscale",
+          WebkitFontSmoothing: "antialiased",
+        },
+        ".child-popover .MuiPaper-root .MuiList-root": {
+          flexDirection: "column",
+        },
+        ":root": {
+          "--swiper-theme-color": colors.secondary.main,
+          colorScheme: "dark",
+        },
+        code: {
+          background: colors.info.lighter,
+          color: colors.alpha.white[100],
+          borderRadius: 4,
+          padding: 4,
+        },
+      },
+    },
     MuiButton: {
+      defaultProps: { color: "secondary" },
       styleOverrides: {
         contained: {
           color: colors.alpha.white[100],
+        },
+      },
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          transition: "background-color 0.3s ease 0s",
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          borderBottom: 0,
         },
       },
     },
@@ -369,6 +430,20 @@ export const DarkTheme = createTheme({
           backgroundColor: colors.alpha.white[100],
         },
       },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: "none",
+          borderRadius: "20px",
+        },
+      },
+    },
+    MuiInputBase: {
+      defaultProps: { color: "secondary" },
+    },
+    MuiInputLabel: {
+      defaultProps: { color: "secondary" },
     },
   },
   breakpoints: {

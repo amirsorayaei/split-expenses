@@ -7,10 +7,10 @@ import { themeCreator } from "./base";
 export const ThemeContext = createContext((_themeName: string): void => {});
 
 const ThemeProviderWrapper = ({ children }: { children: React.ReactNode }) => {
-  const [themeName, _setThemeName] = useState("DarkTheme");
+  const [themeName, _setThemeName] = useState("NavyTheme");
 
   useEffect(() => {
-    const curThemeName = window.localStorage.getItem("appTheme") || "DarkTheme";
+    const curThemeName = window.localStorage.getItem("appTheme") || "NavyTheme";
     _setThemeName(curThemeName);
   }, []);
 

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Theme } from "@mui/material";
-import { DarkTheme } from "./schemes/DarkTheme";
+import { NavyTheme } from "./schemes/NavyTheme";
 
 export function themeCreator(theme: string): Theme {
   return themeMap[theme];
@@ -99,16 +99,16 @@ declare module "@mui/material/styles" {
       };
     };
     general: {
-      reactFrameworkColor: React.CSSProperties["color"];
       borderRadiusSm: string;
       borderRadius: string;
       borderRadiusLg: string;
       borderRadiusXl: string;
     };
     sidebar: {
+      actualWidth: string;
+      parentWidth: string;
       background: React.CSSProperties["color"];
       boxShadow: React.CSSProperties["color"];
-      width: string;
       textColor: React.CSSProperties["color"];
       dividerBg: React.CSSProperties["color"];
       menuItemColor: React.CSSProperties["color"];
@@ -217,18 +217,17 @@ declare module "@mui/material/styles" {
         dark: string;
       };
     };
-
     general: {
-      reactFrameworkColor: React.CSSProperties["color"];
       borderRadiusSm: string;
       borderRadius: string;
       borderRadiusLg: string;
       borderRadiusXl: string;
     };
     sidebar: {
+      actualWidth: string;
+      parentWidth: string;
       background: React.CSSProperties["color"];
       boxShadow: React.CSSProperties["color"];
-      width: string;
       textColor: React.CSSProperties["color"];
       dividerBg: React.CSSProperties["color"];
       menuItemColor: React.CSSProperties["color"];
@@ -249,5 +248,5 @@ declare module "@mui/material/styles" {
 }
 
 const themeMap: { [key: string]: Theme } = {
-  DarkTheme,
+  NavyTheme,
 };
