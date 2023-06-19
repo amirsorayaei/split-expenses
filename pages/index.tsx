@@ -1,14 +1,15 @@
-import { ReactElement } from "react";
-import { Typography } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-import BaseLayout from "@/layouts/BaseLayout";
+const Home = () => {
+  const router = useRouter();
 
-function Home() {
-  return <Typography variant="h1">{"Hello"}</Typography>;
-}
+  useEffect(() => {
+    router.replace("/groups");
+  }, []);
+
+  return null;
+};
 
 export default Home;
-
-Home.getLayout = function getLayout(page: ReactElement) {
-  return <BaseLayout>{page}</BaseLayout>;
-};
