@@ -1,0 +1,61 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "1st Group",
+      "users": [
+        {
+          "id": 1,
+          "name": "Amir"
+        },
+        {
+          "id": 2,
+          "name": "Hesam"
+        },
+        {
+          "id": 3,
+          "name": "Moein"
+        }
+      ],
+      "expense": 2500
+    },
+    {
+      "id": 2,
+      "name": "2nd Group",
+      "users": [
+        {
+          "id": 1,
+          "name": "Amir"
+        },
+        {
+          "id": 2,
+          "name": "Hesam"
+        },
+        {
+          "id": 3,
+          "name": "Moein"
+        }
+      ],
+      "expense": 8000
+    },
+    {
+      "id": 3,
+      "name": "3rd Group",
+      "users": [
+        {
+          "id": 1,
+          "name": "Amir"
+        },
+        {
+          "id": 2,
+          "name": "Hesam"
+        },
+        {
+          "id": 3,
+          "name": "Moein"
+        }
+      ],
+      "expense": 1700
+    }
+  ]
+}
