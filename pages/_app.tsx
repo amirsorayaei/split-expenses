@@ -4,12 +4,14 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Provider } from "react-redux";
 import { CacheProvider, EmotionCache } from "@emotion/react";
+import { CssBaseline } from "@mui/material";
 
 import "@/assets/css/fonts.css";
 
 import { store } from "@/redux/store";
 import createEmotionCache from "@/theme/createEmotionCache";
 import ThemeProvider from "@/theme/ThemeProvider";
+import BaseLayout from "@/layouts/BaseLayout";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -24,7 +26,7 @@ interface SplitAppProps extends AppProps {
 
 function Split(props: SplitAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const getLayout = Component.getLayout ?? ((page) => page);
+  // const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -37,7 +39,10 @@ function Split(props: SplitAppProps) {
       </Head>
       <ThemeProvider>
         <Provider store={store}>
-          {getLayout(<Component {...pageProps} />)}
+          <CssBaseline />
+          <BaseLayout>
+            <Component {...pageProps} />
+          </BaseLayout>
         </Provider>
       </ThemeProvider>
     </CacheProvider>
