@@ -17,3 +17,14 @@ export const convertToEnglishDigit = (num: string): string => {
 export const removeWhiteSpaceFromString = (str: string): string => {
   return str && str.split(/\s+/).join("");
 };
+
+/**
+ * Generate unique ID
+ * @param {any[]} list
+ * @returns {number}
+ */
+export const generateUniqueID = (list: any[]): number => {
+  const lastItem = list.at(-1); // Get the last item of given list
+  const generatedID = lastItem ? lastItem.id + 1 : 1; // Generate unique ID
+  return generatedID;
+};
