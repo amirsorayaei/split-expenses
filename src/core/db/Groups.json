@@ -17,7 +17,7 @@
           "name": "Moein"
         }
       ],
-      "expense": 2500
+      "totalExpense": 2500
     },
     {
       "id": 2,
@@ -36,7 +36,7 @@
           "name": "Moein"
         }
       ],
-      "expense": 8000
+      "totalExpense": 8000
     },
     {
       "id": 3,
@@ -55,7 +55,7 @@
           "name": "Moein"
         }
       ],
-      "expense": 1700
+      "totalExpense": 1700
     }
   ]
 }

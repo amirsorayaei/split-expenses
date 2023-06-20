@@ -21,7 +21,7 @@ const GroupsTable = () => {
           <Typography>{item.users?.length + " " + "people"}</Typography>
         </TableCell>
         <TableCell>
-          <Typography>{item.expense}</Typography>
+          <Typography>{item.totalExpense}</Typography>
         </TableCell>
       </>
     );

@@ -2,7 +2,8 @@ export interface Group {
   id: number;
   name: string;
   users: User[];
-  totalExpenses: number;
+  totalExpense: number;
+  expenses?: Expense[];
 }
 
 export interface User {
