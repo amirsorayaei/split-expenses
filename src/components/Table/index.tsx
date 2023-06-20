@@ -10,8 +10,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  CardActions,
-  Typography,
 } from "@mui/material";
 
 import SearchBox from "../SearchBox";
@@ -26,7 +24,7 @@ interface TableProps {
     align?: "inherit" | "left" | "center" | "right" | "justify";
   }[];
   data: unknown[];
-  renderItem(item: any, index: number): ReactNode | ReactNode[];
+  renderItem(item: unknown, index: number): ReactNode | ReactNode[];
 }
 
 const Table: FC<TableProps> = ({
@@ -66,9 +64,9 @@ const Table: FC<TableProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item: any, index: number) => {
+            {data.map((item: unknown, index: number) => {
               return (
-                <TableRow hover key={item.id} sx={{ cursor: "pointer" }}>
+                <TableRow hover key={index} sx={{ cursor: "pointer" }}>
                   {renderItem(item, index)}
                 </TableRow>
               );

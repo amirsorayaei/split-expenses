@@ -3,6 +3,7 @@ import React, {
   useImperativeHandle,
   ChangeEvent,
   forwardRef,
+  KeyboardEventHandler,
 } from "react";
 import {
   Button,
@@ -63,9 +64,9 @@ const SearchBox = forwardRef(
       onSearch(value);
     };
 
-    const onKeyDown = (e: any) => {
-      //it triggers by pressing the enter key
-      if (e.keyCode === 13) {
+    const onKeyDown = (event: any) => {
+      // It triggers by pressing the enter key
+      if (event.keyCode === 13) {
         onClickSearch();
       }
     };

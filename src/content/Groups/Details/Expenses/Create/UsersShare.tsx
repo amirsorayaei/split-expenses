@@ -14,8 +14,18 @@ interface Props {
   submit(usersWithShare: UserWithShare[]): void;
 }
 
+interface UserItemProps {
+  username: string;
+  index: number;
+  userShare: number;
+}
+
+interface UserItemRef {
+  getUserShare(): UserWithShare;
+}
+
 const UsersShare = ({ users, amount, submit }: Props) => {
-  const usersShare = useRef<any[]>([]);
+  const usersShare = useRef<UserItemRef[]>([]);
 
   const onClickSubmit = () => {
     const usersWithShare: UserWithShare[] = usersShare.current.map((item) =>
@@ -37,13 +47,13 @@ const UsersShare = ({ users, amount, submit }: Props) => {
   return (
     <>
       <Grid container spacing={2}>
-        {users.map((item, index) => {
+        {users.map((username, index) => {
           const share = amount / users.length;
           return (
             <UserItem
-              ref={(ref) => (usersShare.current[index] = ref)}
+              ref={(ref: UserItemRef) => (usersShare.current[index] = ref)}
               key={index}
-              item={item}
+              username={username}
               index={index}
               userShare={share}
             />
@@ -58,24 +68,13 @@ const UsersShare = ({ users, amount, submit }: Props) => {
 };
 
 const UserItem = forwardRef(
-  (
-    {
-      item,
-      userShare,
-      index,
-    }: {
-      item: string;
-      userShare: number;
-      index: number;
-    },
-    ref
-  ) => {
+  ({ username, userShare, index }: UserItemProps, ref) => {
     const [share, setShare] = useState<string>(userShare.toString());
 
     useImperativeHandle(ref, () => ({
       getUserShare() {
         const userWithShare: UserWithShare = {
-          username: item,
+          username,
           share: +share,
         };
         return userWithShare;
@@ -96,7 +95,7 @@ const UserItem = forwardRef(
           fullWidth
           type="number"
           InputProps={{
-            startAdornment: <Typography mr={1.5}>{item}</Typography>,
+            startAdornment: <Typography mr={1.5}>{username}</Typography>,
             endAdornment: <Typography ml={1.5}>{"USD"}</Typography>,
           }}
         />
