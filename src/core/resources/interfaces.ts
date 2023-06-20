@@ -1,9 +1,9 @@
 export interface Group {
-  id: number;
+  id?: number;
   name: string;
   users: User[];
   totalExpense: number;
-  expenses?: Expense[];
+  expenses: Expense[];
 }
 
 export interface User {
@@ -14,7 +14,7 @@ export interface User {
 export interface Expense {
   id: number;
   name: string;
-  users: User[];
+  usersWithShare: UserWithShare[];
   amount: number;
   createdAt: string;
 }

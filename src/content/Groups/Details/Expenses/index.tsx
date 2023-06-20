@@ -17,7 +17,9 @@ const Expenses = () => {
           <Typography>{item.name}</Typography>
         </TableCell>
         <TableCell>
-          <Typography>{item.users?.length + " " + "people"}</Typography>
+          <Typography>
+            {item.usersWithShare?.length + " " + "people"}
+          </Typography>
         </TableCell>
         <TableCell>
           <Typography>{item.amount}</Typography>

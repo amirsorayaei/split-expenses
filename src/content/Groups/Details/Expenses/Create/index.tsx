@@ -15,13 +15,12 @@ import {
   Chip,
   useTheme,
   Typography,
-  CardActions,
   Button,
 } from "@mui/material";
 
 import PageTitle from "@/components/PageTitle";
 import UsersData from "@/core/db/Users.json";
-import { User, UserWithShare } from "@/core/resources/interfaces";
+import { UserWithShare } from "@/core/resources/interfaces";
 import UsersShare from "./UsersShare";
 
 const CreateExpense = () => {
