@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { TableCell, Typography } from "@mui/material";
 
 import Table from "@/components/Table";
+import { Expense } from "@/core/resources/interfaces";
 
 const Expenses = () => {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Expense[]>([]);
 
-  const renderItem = (item: any) => {
+  const renderItem = (item: Expense) => {
     return (
       <>
         <TableCell>
@@ -19,7 +20,10 @@ const Expenses = () => {
           <Typography>{item.users?.length + " " + "people"}</Typography>
         </TableCell>
         <TableCell>
-          <Typography>{item.expense}</Typography>
+          <Typography>{item.amount}</Typography>
+        </TableCell>
+        <TableCell>
+          <Typography>{item.createdAt}</Typography>
         </TableCell>
       </>
     );
@@ -29,7 +33,7 @@ const Expenses = () => {
     <Table
       data={data}
       renderItem={renderItem}
-      title={"Expensess Table List"}
+      title={"Expenses Table List"}
       tableColumns={[
         { text: "ID" },
         { text: "Name" },

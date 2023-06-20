@@ -2,12 +2,20 @@ export interface Group {
   id: number;
   name: string;
   users: User[];
-  expense: number;
+  totalExpenses: number;
 }
 
 export interface User {
   id: number;
   name: string;
+}
+
+export interface Expense {
+  id: number;
+  name: string;
+  users: User[];
+  amount: number;
+  createdAt: string;
 }
 
 export interface UserWithShare {
