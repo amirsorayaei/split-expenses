@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent } from "react";
 import {
   Container,
   Card,
@@ -20,10 +20,22 @@ import PageTitle from "@/components/PageTitle";
 import Currencies from "@/core/db/Currencies.json";
 import SelectUsers from "./SelectUsers";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { createGroup } from "@/redux/slices/groupSlice";
+import { Group, User } from "@/core/resources/interfaces";
+import { store } from "@/redux/store";
+
+interface SelectUsersRef {
+  getUsers(): string[];
+}
 
 const CreateGroup = () => {
   const [name, setName] = useState<string>("");
   const [currency, setCurrency] = useState<string>("");
+
+  const selectUsersRef = useRef<SelectUsersRef>(null);
+
+  const dispatch = useDispatch();
 
   const router = useRouter();
 
@@ -41,11 +53,22 @@ const CreateGroup = () => {
     /**
      * Groups created with given details
      */
+    const group: Group = {
+      name,
+      currency,
+      users: selectUsersRef.current?.getUsers() || [],
+    };
+    dispatch(createGroup(group));
+
+    /**
+     * Latest group known as created group
+     */
+    const createdGroup = store.getState().group.groups.at(-1);
 
     /**
      * Navigate to the next page
      */
-    router.push(`/groups/${1}`);
+    router.push(`/groups/${createdGroup?.id}`);
   };
 
   return (
@@ -100,7 +123,7 @@ const CreateGroup = () => {
           <Card>
             <CardHeader title={"Users"} />
             <CardContent>
-              <SelectUsers />
+              <SelectUsers ref={selectUsersRef} />
             </CardContent>
           </Card>
         </Grid>

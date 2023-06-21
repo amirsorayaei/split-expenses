@@ -17,19 +17,32 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 
 import PageTitle from "@/components/PageTitle";
-import UsersData from "@/core/db/Users.json";
-import { UserWithShare } from "@/core/resources/interfaces";
+import { Expense, UserWithShare } from "@/core/resources/interfaces";
 import UsersShare from "./UsersShare";
+import { createExpense } from "@/redux/slices/groupSlice";
+import { useRouter } from "next/router";
+import { RootState } from "@/redux/store";
 
-const CreateExpense = () => {
+interface Props {
+  groupId: number;
+}
+
+const CreateExpense = ({ groupId }: Props) => {
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [users, setUsers] = useState<string[]>([]);
   const [detailsSubmitted, setDetailsSubmitted] = useState<boolean>(false);
 
-  const theme = useTheme();
+  const selectedGroup = useSelector((state: RootState) =>
+    state.group.groups.find((item) => item.id === groupId)
+  );
+
+  const dispatch = useDispatch();
+
+  const router = useRouter();
 
   const handleOnChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -50,10 +63,20 @@ const CreateExpense = () => {
   };
 
   const submitAll = (usersWithShare: UserWithShare[]) => {
-    /**
-     * Submit all the informations to the redux
-     * Name - Amount - Users with share
-     */
+    const expense: Expense = {
+      name,
+      amount: +amount,
+      usersWithShare,
+    };
+
+    dispatch(
+      createExpense({
+        groupId,
+        expense,
+      })
+    );
+
+    router.back();
   };
 
   return (
@@ -116,10 +139,10 @@ const CreateExpense = () => {
                         </Box>
                       )}
                     >
-                      {UsersData.data.map((item) => {
+                      {selectedGroup?.users.map((username, index) => {
                         return (
-                          <MenuItem key={item.id} value={item.name}>
-                            {item.name}
+                          <MenuItem key={index} value={username}>
+                            {username}
                           </MenuItem>
                         );
                       })}

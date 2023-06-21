@@ -23,7 +23,7 @@ const GroupDetails = ({ id }: Props) => {
         buttonTitle={"Create new expense"}
         onClickButton={onClickCreatNewExpense}
       />
-      <Expenses />
+      <Expenses groupId={id} />
     </Container>
   );
 };
