@@ -12,6 +12,7 @@ import { store } from "@/redux/store";
 import createEmotionCache from "@/theme/createEmotionCache";
 import ThemeProvider from "@/theme/ThemeProvider";
 import BaseLayout from "@/layouts/BaseLayout";
+import DialogAlert from "@/components/DialogAlert/DialogAlert";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -40,6 +41,7 @@ function Split(props: SplitAppProps) {
       <ThemeProvider>
         <Provider store={store}>
           <CssBaseline />
+          <DialogAlert />
           <BaseLayout>
             <Component {...pageProps} />
           </BaseLayout>
