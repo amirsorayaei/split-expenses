@@ -1,14 +1,32 @@
-import React, { useState } from "react";
-import { TableRow, TableCell, Typography } from "@mui/material";
+import React from "react";
+import { TableCell, Typography } from "@mui/material";
 
 import Table from "@/components/Table";
 import { Group } from "@/core/resources/interfaces";
-import GroupsData from "@/core/db/Groups.json";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useRouter } from "next/router";
+import ActionButtons from "@/components/ActionButtons";
+import { deleteGroup } from "@/redux/slices/groupSlice";
 
 const GroupsTable = () => {
-  const [data, setData] = useState<Group[]>(GroupsData.data);
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  /**
+   * Clone groups list from redux
+   */
+  const groups = useSelector((state: RootState) => state.group.groups);
+
+  const onClickItem = (item: Group) => {
+    router.push(`/groups/${item.id}`);
+  };
 
   const renderItem = (item: Group) => {
+    const onDeleteGroup = () => {
+      dispatch(deleteGroup(item));
+    };
+
     return (
       <>
         <TableCell>
@@ -23,15 +41,28 @@ const GroupsTable = () => {
         <TableCell>
           <Typography>{item.totalExpense}</Typography>
         </TableCell>
+        <TableCell>
+          <ActionButtons
+            onDelete={onDeleteGroup}
+            dialogSettings={{
+              title: "Delete group?",
+              message: "Do you want to delete this group?",
+              confirmBtn: "Yes",
+              cancelBtn: "No",
+            }}
+          />
+        </TableCell>
       </>
     );
   };
 
   return (
     <Table
-      data={data}
+      data={groups}
       renderItem={renderItem}
       title={"Groups Table List"}
+      emptyMessage={"No groups found !"}
+      onClickItem={onClickItem}
       tableColumns={[
         { text: "ID" },
         { text: "Name" },
