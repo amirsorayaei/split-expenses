@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Expense, Group } from "@/core/resources/interfaces";
 import { GroupState } from "../types/Types";
 import { generateUniqueID } from "@/core/resources/Functions";
+import moment from "moment";
 
 const initialState: GroupState = {
   groups: [],
@@ -21,7 +22,12 @@ export const groupSlice = createSlice({
       /**
        * Create a new object from given group with unique generated ID
        */
-      const group: Group = { ...payload, id: generateUniqueID(state.groups) };
+      const group: Group = {
+        ...payload,
+        id: generateUniqueID(state.groups),
+        totalExpense: 0,
+        expenses: [],
+      };
       state.groups.push(group);
     },
     updateGroup: (state, param) => {
@@ -66,11 +72,13 @@ export const groupSlice = createSlice({
         /**
          * Create a new object from given group with unique generated ID
          */
+        const expenses = state.groups[givenGroupIndex].expenses || [];
         const expense: Expense = {
           ...payload.expense,
-          id: generateUniqueID(state.groups[givenGroupIndex].expenses),
+          id: generateUniqueID(expenses),
+          createdAt: moment().format("YYYY/MM/DD"),
         };
-        state.groups[givenGroupIndex].expenses.push(expense);
+        expenses.push(expense);
       }
     },
     updateExpense: (state, param) => {

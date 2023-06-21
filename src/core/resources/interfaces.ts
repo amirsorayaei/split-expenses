@@ -1,9 +1,10 @@
 export interface Group {
   id?: number;
   name: string;
-  users: User[];
-  totalExpense: number;
-  expenses: Expense[];
+  currency: string;
+  users: string[];
+  totalExpense?: number;
+  expenses?: Expense[];
 }
 
 export interface User {
@@ -12,11 +13,11 @@ export interface User {
 }
 
 export interface Expense {
-  id: number;
+  id?: number;
   name: string;
   usersWithShare: UserWithShare[];
   amount: number;
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface UserWithShare {
