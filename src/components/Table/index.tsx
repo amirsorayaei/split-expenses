@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import SearchBox from "../SearchBox";
+import EmptyContent from "../EmptyContent";
 
 interface TableProps {
   title: string;
@@ -25,6 +26,8 @@ interface TableProps {
   }[];
   data: unknown[];
   renderItem(item: unknown, index: number): ReactNode | ReactNode[];
+  emptyMessage: string;
+  onClickItem?(item: unknown, index: number): void;
 }
 
 const Table: FC<TableProps> = ({
@@ -35,6 +38,8 @@ const Table: FC<TableProps> = ({
   title,
   searchable = false,
   searchPlaceholder,
+  emptyMessage,
+  onClickItem,
 }) => {
   const onSearch = () => {};
 
@@ -50,33 +55,39 @@ const Table: FC<TableProps> = ({
           <SearchBox onSearch={onSearch} placeholder={searchPlaceholder} />
         </Box>
       )}
-      <TableContainer>
-        <MaterialTable>
-          <TableHead>
-            <TableRow>
-              {tableColumns.map((item, index) => {
+      {Array.isArray(data) && data.length > 0 ? (
+        <TableContainer>
+          <MaterialTable>
+            <TableHead>
+              <TableRow>
+                {tableColumns.map((item, index) => {
+                  return (
+                    <TableCell align={item.align || "left"} key={index}>
+                      {item.text}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.map((item: unknown, index: number) => {
                 return (
-                  <TableCell align={item.align || "left"} key={index}>
-                    {item.text}
-                  </TableCell>
+                  <TableRow
+                    hover
+                    key={index}
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => onClickItem(item, index)}
+                  >
+                    {renderItem(item, index)}
+                  </TableRow>
                 );
               })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((item: unknown, index: number) => {
-              return (
-                <TableRow hover key={index} sx={{ cursor: "pointer" }}>
-                  {renderItem(item, index)}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </MaterialTable>
-      </TableContainer>
-      {/* <CardActions sx={{ p: 2 }}>
-        <Typography>{"Card Footer"}</Typography>
-      </CardActions> */}
+            </TableBody>
+          </MaterialTable>
+        </TableContainer>
+      ) : (
+        <EmptyContent message={emptyMessage} />
+      )}
     </Card>
   );
 };
