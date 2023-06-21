@@ -5,10 +5,11 @@ import Head from "next/head";
 import { Provider } from "react-redux";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
+import { PersistGate } from "redux-persist/integration/react";
 
 import "@/assets/css/fonts.css";
 
-import { store } from "@/redux/store";
+import { persistor, store } from "@/redux/store";
 import createEmotionCache from "@/theme/createEmotionCache";
 import ThemeProvider from "@/theme/ThemeProvider";
 import BaseLayout from "@/layouts/BaseLayout";
@@ -40,11 +41,13 @@ function Split(props: SplitAppProps) {
       </Head>
       <ThemeProvider>
         <Provider store={store}>
-          <CssBaseline />
-          <DialogAlert />
-          <BaseLayout>
-            <Component {...pageProps} />
-          </BaseLayout>
+          <PersistGate loading={null} persistor={persistor}>
+            <CssBaseline />
+            <DialogAlert />
+            <BaseLayout>
+              <Component {...pageProps} />
+            </BaseLayout>
+          </PersistGate>
         </Provider>
       </ThemeProvider>
     </CacheProvider>

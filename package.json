@@ -28,7 +28,12 @@
     "react-custom-scrollbars-2": "^4.5.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.7",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.4.2",
     "stylis-plugin-rtl": "^2.1.1",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/redux-persist": "^4.3.1"
   }
 }

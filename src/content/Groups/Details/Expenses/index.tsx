@@ -23,7 +23,7 @@ const Expenses = ({ groupId }: Props) => {
     )?.expenses || [];
 
   const onClickItem = (item: Expense) => {
-    router.push(`./group/${groupId}/expense/${item.id}`);
+    router.push(`./${groupId}/expense/${item.id}`);
   };
 
   const renderItem = (item: Expense) => {
