@@ -1,18 +1,34 @@
-import React, { useState, ChangeEvent } from "react";
+import React, {
+  useState,
+  ChangeEvent,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Grid, TextField, Button, Chip, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
-const SelectUsers = () => {
+const SelectUsers = forwardRef((_props, ref) => {
   const [username, setUsername] = useState<string>("");
   const [users, setUsers] = useState<string[]>([]);
+
+  useImperativeHandle(ref, () => ({
+    getUsers() {
+      return users;
+    },
+  }));
 
   const handleOnChangeUsername = (event: ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
   };
 
   const addUser = () => {
-    setUsername("");
-    setUsers((previousUsers) => [...previousUsers, username]);
+    /**
+     * Adding users is allowed when the input is filled
+     */
+    if (username.length > 0) {
+      setUsername("");
+      setUsers((previousUsers) => [...previousUsers, username]);
+    }
   };
 
   const keyPress = (event: any) => {
@@ -59,6 +75,8 @@ const SelectUsers = () => {
       </Grid>
     </Grid>
   );
-};
+});
+
+SelectUsers.displayName = "SelectUsers";
 
 export default SelectUsers;
