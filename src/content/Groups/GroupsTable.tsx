@@ -8,6 +8,7 @@ import { RootState } from "@/redux/store";
 import { useRouter } from "next/router";
 import ActionButtons from "@/components/ActionButtons";
 import { deleteGroup } from "@/redux/slices/groupSlice";
+import { getTotalExpenseOfGroup } from "@/core/resources/Functions";
 
 const GroupsTable = () => {
   const router = useRouter();
@@ -39,7 +40,9 @@ const GroupsTable = () => {
           <Typography>{item.users?.length + " " + "people"}</Typography>
         </TableCell>
         <TableCell>
-          <Typography>{item.totalExpense}</Typography>
+          <Typography>{`${getTotalExpenseOfGroup(item.id)} ${
+            item.currency
+          }`}</Typography>
         </TableCell>
         <TableCell>
           <ActionButtons

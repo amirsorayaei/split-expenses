@@ -6,34 +6,36 @@ import React, {
   useImperativeHandle,
 } from "react";
 import { Grid, Typography, TextField, Button } from "@mui/material";
-import { UserWithShare } from "@/core/resources/interfaces";
+import { Group, User } from "@/core/resources/interfaces";
 
 interface Props {
-  users: string[];
+  users: User[];
   amount: number;
-  submit(usersWithShare: UserWithShare[]): void;
+  submit(users: User[]): void;
+  currency?: string;
 }
 
 interface UserItemProps {
-  username: string;
+  user: User;
   index: number;
   userShare: number;
+  currency?: string;
 }
 
 interface UserItemRef {
-  getUserShare(): UserWithShare;
+  getUserShare(): User;
 }
 
-const UsersShare = ({ users, amount, submit }: Props) => {
+const UsersShare = ({ users, amount, submit, currency }: Props) => {
   const usersShare = useRef<UserItemRef[]>([]);
 
   const onClickSubmit = () => {
-    const usersWithShare: UserWithShare[] = usersShare.current.map((item) =>
+    const usersWithShare: User[] = usersShare.current.map((item) =>
       item.getUserShare()
     );
 
     const sharesSum = usersWithShare.reduce((a, b) => {
-      return a + b.share;
+      return a + (b.share || 0);
     }, 0);
 
     if (sharesSum !== amount) {
@@ -47,15 +49,17 @@ const UsersShare = ({ users, amount, submit }: Props) => {
   return (
     <>
       <Grid container spacing={2}>
-        {users.map((username, index) => {
-          const share = amount / users.length;
+        {users.map((user, index) => {
+          const share = user.share || amount / users.length;
+
           return (
             <UserItem
               ref={(ref: UserItemRef) => (usersShare.current[index] = ref)}
-              key={index}
-              username={username}
+              key={user.id}
+              user={user}
               index={index}
               userShare={share}
+              currency={currency}
             />
           );
         })}
@@ -68,16 +72,16 @@ const UsersShare = ({ users, amount, submit }: Props) => {
 };
 
 const UserItem = forwardRef(
-  ({ username, userShare, index }: UserItemProps, ref) => {
+  ({ user, userShare, index, currency }: UserItemProps, ref) => {
     const [share, setShare] = useState<string>(userShare.toString());
 
     useImperativeHandle(ref, () => ({
       getUserShare() {
-        const userWithShare: UserWithShare = {
-          username,
+        const users: User = {
+          ...user,
           share: +share,
         };
-        return userWithShare;
+        return users;
       },
     }));
 
@@ -95,8 +99,8 @@ const UserItem = forwardRef(
           fullWidth
           type="number"
           InputProps={{
-            startAdornment: <Typography mr={1.5}>{username}</Typography>,
-            endAdornment: <Typography ml={1.5}>{"USD"}</Typography>,
+            startAdornment: <Typography mr={1.5}>{user.name}</Typography>,
+            endAdornment: <Typography ml={1.5}>{currency}</Typography>,
           }}
         />
       </Grid>
