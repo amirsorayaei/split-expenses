@@ -328,7 +328,7 @@ export const NavyTheme = createTheme({
       fontSize: 14,
     },
     h6: {
-      fontSize: 15,
+      fontSize: 13,
     },
     body1: {
       fontSize: 14,

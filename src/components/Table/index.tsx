@@ -3,7 +3,7 @@ import {
   Card,
   CardHeader,
   Box,
-  Divider,
+  useTheme,
   TableContainer,
   Table as MaterialTable,
   TableHead,
@@ -41,6 +41,8 @@ const Table: FC<TableProps> = ({
   emptyMessage,
   onClickItem,
 }) => {
+  const theme = useTheme();
+
   const onSearch = () => {};
 
   return (
@@ -62,7 +64,11 @@ const Table: FC<TableProps> = ({
               <TableRow>
                 {tableColumns.map((item, index) => {
                   return (
-                    <TableCell align={item.align || "left"} key={index}>
+                    <TableCell
+                      sx={{ color: theme.palette.text.secondary }}
+                      align={item.align || "left"}
+                      key={index}
+                    >
                       {item.text}
                     </TableCell>
                   );

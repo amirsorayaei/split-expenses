@@ -10,7 +10,7 @@ const PageNotFound = () => {
       alignItems={"center"}
       justifyContent={"center"}
     >
-      <Typography>{"404 | Page Not Found"}</Typography>
+      <Typography variant={"h3"}>{"404 | Page Not Found"}</Typography>
     </Box>
   );
 };
