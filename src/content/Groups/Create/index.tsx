@@ -26,7 +26,7 @@ import { Group, User } from "@/core/resources/interfaces";
 import { store } from "@/redux/store";
 
 interface SelectUsersRef {
-  getUsers(): string[];
+  getUsers(): User[];
 }
 
 const CreateGroup = () => {

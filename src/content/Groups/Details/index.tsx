@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 
 import PageTitle from "@/components/PageTitle";
 import Expenses from "./Expenses";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 interface Props {
   id: number;
@@ -11,6 +13,10 @@ interface Props {
 const GroupDetails = ({ id }: Props) => {
   const router = useRouter();
 
+  const group = useSelector((state: RootState) =>
+    state.group.groups.find((item) => item.id === id)
+  );
+
   const onClickCreatNewExpense = () => {
     router.push(`/groups/${id}/create-expense`);
   };
@@ -18,12 +24,12 @@ const GroupDetails = ({ id }: Props) => {
   return (
     <Container maxWidth="lg">
       <PageTitle
-        heading="Group Details"
-        subHeading="See group details below and create new expenses."
+        heading={`Group Details - ${group?.name}`}
+        subHeading={"See group details below and create new expenses."}
         buttonTitle={"Create new expense"}
         onClickButton={onClickCreatNewExpense}
       />
-      <Expenses groupId={id} />
+      <Expenses group={group} />
     </Container>
   );
 };
