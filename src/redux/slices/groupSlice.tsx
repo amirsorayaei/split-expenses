@@ -25,7 +25,6 @@ export const groupSlice = createSlice({
       const group: Group = {
         ...payload,
         id: generateUniqueID(state.groups),
-        totalExpense: 0,
         expenses: [],
       };
       state.groups.push(group);
@@ -98,14 +97,14 @@ export const groupSlice = createSlice({
         /**
          * Find the given expense index with expenseId
          */
-        const givenExpenseIndex = givenGroup.expenses.findIndex(
+        const givenExpenseIndex = givenGroup.expenses?.findIndex(
           (el) => el.id === payload.expense.id
         );
 
         /**
          * Means that item exists
          */
-        if (givenExpenseIndex !== -1) {
+        if (givenExpenseIndex >= 0) {
           /**
            * Update given expense details
            */
@@ -130,7 +129,7 @@ export const groupSlice = createSlice({
         /**
          * Remove given expense from the list
          */
-        const filteredExpenses = givenGroup.expenses.filter(
+        const filteredExpenses = givenGroup.expenses?.filter(
           (el) => el.id !== payload.expense.id
         );
         givenGroup.expenses = filteredExpenses;
