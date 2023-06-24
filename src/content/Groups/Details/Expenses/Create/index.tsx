@@ -28,7 +28,7 @@ import { RootState } from "@/redux/store";
 
 interface Props {
   groupId: number;
-  expenseId: number;
+  expenseId?: number;
 }
 
 const CreateExpense = ({ groupId, expenseId }: Props) => {
@@ -203,7 +203,7 @@ const CreateExpense = ({ groupId, expenseId }: Props) => {
                     >
                       {selectedGroup?.users.map((user, index) => {
                         return (
-                          <MenuItem key={user.id} value={user}>
+                          <MenuItem key={user.id} value={user as any}>
                             {user.name}
                           </MenuItem>
                         );

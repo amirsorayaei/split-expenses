@@ -93,22 +93,23 @@ export const groupSlice = createSlice({
        * Means that item exists
        */
       if (givenGroupIndex !== -1) {
-        const givenGroup = state.groups[givenGroupIndex];
+        let givenGroup = state.groups[givenGroupIndex];
         /**
          * Find the given expense index with expenseId
          */
-        const givenExpenseIndex = givenGroup.expenses?.findIndex(
+        let givenExpenseIndex = givenGroup.expenses?.findIndex(
           (el) => el.id === payload.expense.id
         );
 
         /**
          * Means that item exists
          */
-        if (givenExpenseIndex >= 0) {
+        if (givenExpenseIndex && givenExpenseIndex >= 0) {
           /**
            * Update given expense details
            */
-          givenGroup.expenses[givenExpenseIndex] = payload.expense;
+          const expenses = givenGroup.expenses || [];
+          expenses[givenExpenseIndex] = payload.expense;
         }
       }
     },

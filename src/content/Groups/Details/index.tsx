@@ -5,6 +5,7 @@ import PageTitle from "@/components/PageTitle";
 import Expenses from "./Expenses";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import EmptyContent from "@/components/EmptyContent";
 
 interface Props {
   id: number;
@@ -20,6 +21,10 @@ const GroupDetails = ({ id }: Props) => {
   const onClickCreatNewExpense = () => {
     router.push(`/groups/${id}/create-expense`);
   };
+
+  if (!group) {
+    return <EmptyContent message={"No group found!"} />;
+  }
 
   return (
     <Container maxWidth="lg">

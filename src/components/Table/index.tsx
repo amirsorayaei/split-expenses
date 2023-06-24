@@ -82,7 +82,7 @@ const Table: FC<TableProps> = ({
                     hover
                     key={index}
                     sx={{ cursor: "pointer" }}
-                    onClick={() => onClickItem(item, index)}
+                    onClick={() => onClickItem?.(item, index)}
                   >
                     {renderItem(item, index)}
                   </TableRow>
