@@ -6,18 +6,20 @@ import React, {
 } from "react";
 import { Grid, TextField, Button, Chip, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import { User } from "@/core/resources/interfaces";
+import { generateUniqueID } from "@/core/resources/Functions";
 
 const SelectUsers = forwardRef((_props, ref) => {
   const [username, setUsername] = useState<string>("");
-  const [users, setUsers] = useState<string[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useImperativeHandle(ref, () => ({
     getUsers() {
-      return users;
+      return users as User[];
     },
   }));
 
-  const handleOnChangeUsername = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleOnChangeUser = (event: ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
   };
 
@@ -27,7 +29,10 @@ const SelectUsers = forwardRef((_props, ref) => {
      */
     if (username.length > 0) {
       setUsername("");
-      setUsers((previousUsers) => [...previousUsers, username]);
+      setUsers((previousUsers) => [
+        ...previousUsers,
+        { id: generateUniqueID(users), name: username },
+      ]);
     }
   };
 
@@ -48,7 +53,7 @@ const SelectUsers = forwardRef((_props, ref) => {
         <TextField
           id="user-name-textfield"
           value={username}
-          onChange={handleOnChangeUsername}
+          onChange={handleOnChangeUser}
           label={"User Name"}
           onKeyDown={keyPress}
           fullWidth
@@ -68,7 +73,7 @@ const SelectUsers = forwardRef((_props, ref) => {
         <Grid container pt={2} spacing={1}>
           {users.map((item, index) => (
             <Grid key={index} item>
-              <Chip label={item} onDelete={() => onDeleteUser(index)} />
+              <Chip label={item.name} onDelete={() => onDeleteUser(index)} />
             </Grid>
           ))}
         </Grid>

@@ -2,27 +2,23 @@ export interface Group {
   id?: number;
   name: string;
   currency: string;
-  users: string[];
-  totalExpense?: number;
+  users: User[];
   expenses?: Expense[];
 }
 
 export interface User {
   id: number;
   name: string;
+  share?: number;
 }
 
 export interface Expense {
   id?: number;
   name: string;
-  usersWithShare: UserWithShare[];
+  users: User[];
   amount: number;
+  payor: User;
   createdAt?: string;
-}
-
-export interface UserWithShare {
-  username: string;
-  share: number;
 }
 
 export interface MaterialSelect {
