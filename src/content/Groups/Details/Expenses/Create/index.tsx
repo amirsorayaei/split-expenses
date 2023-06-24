@@ -20,24 +20,36 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import PageTitle from "@/components/PageTitle";
-import { Expense, UserWithShare } from "@/core/resources/interfaces";
+import { Expense, User } from "@/core/resources/interfaces";
 import UsersShare from "./UsersShare";
-import { createExpense } from "@/redux/slices/groupSlice";
+import { createExpense, updateExpense } from "@/redux/slices/groupSlice";
 import { useRouter } from "next/router";
 import { RootState } from "@/redux/store";
 
 interface Props {
   groupId: number;
+  expenseId: number;
 }
 
-const CreateExpense = ({ groupId }: Props) => {
-  const [name, setName] = useState<string>("");
-  const [amount, setAmount] = useState<string>("");
-  const [users, setUsers] = useState<string[]>([]);
-  const [detailsSubmitted, setDetailsSubmitted] = useState<boolean>(false);
-
+const CreateExpense = ({ groupId, expenseId }: Props) => {
   const selectedGroup = useSelector((state: RootState) =>
     state.group.groups.find((item) => item.id === groupId)
+  );
+
+  const selectedExpense = selectedGroup?.expenses?.find(
+    (expense) => expense.id === expenseId
+  );
+
+  const [name, setName] = useState<string>(selectedExpense?.name || "");
+  const [amount, setAmount] = useState<string>(
+    selectedExpense?.amount.toString() || ""
+  );
+  const [payorUserId, setPayorUserId] = useState<string>(
+    selectedExpense?.payor.id.toString() || ""
+  );
+  const [users, setUsers] = useState<User[]>(selectedExpense?.users || []);
+  const [detailsSubmitted, setDetailsSubmitted] = useState<boolean>(
+    !!expenseId
   );
 
   const dispatch = useDispatch();
@@ -52,6 +64,12 @@ const CreateExpense = ({ groupId }: Props) => {
     setAmount(event.target.value);
   };
 
+  const handleOnChangePayorUser = (
+    event: SelectChangeEvent<typeof payorUserId>
+  ) => {
+    setPayorUserId(event.target.value);
+  };
+
   const handleOnChangeUsers = (event: SelectChangeEvent<typeof users>) => {
     if (Array.isArray(event.target.value)) {
       setUsers(event.target.value);
@@ -62,21 +80,37 @@ const CreateExpense = ({ groupId }: Props) => {
     setDetailsSubmitted(!detailsSubmitted);
   };
 
-  const submitAll = (usersWithShare: UserWithShare[]) => {
-    const expense: Expense = {
-      name,
-      amount: +amount,
-      usersWithShare,
-    };
+  const submitAll = (users: User[]) => {
+    const user = selectedGroup?.users.find((user) => user.id === +payorUserId);
 
-    dispatch(
-      createExpense({
-        groupId,
-        expense,
-      })
-    );
+    if (user) {
+      const expense: Expense = {
+        ...selectedExpense,
+        name,
+        amount: +amount,
+        payor: user,
+        users,
+      };
 
-    router.back();
+      if (expenseId) {
+        /**
+         * Update existing expense
+         */
+        dispatch(updateExpense({ groupId, expense }));
+      } else {
+        /**
+         * Create new expense
+         */
+        dispatch(
+          createExpense({
+            groupId,
+            expense,
+          })
+        );
+      }
+
+      router.back();
+    }
   };
 
   return (
@@ -91,7 +125,7 @@ const CreateExpense = ({ groupId }: Props) => {
             <CardHeader title={"Info"} />
             <CardContent>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} md={4}>
                   <TextField
                     id="expense-name-textfield"
                     value={name}
@@ -101,7 +135,7 @@ const CreateExpense = ({ groupId }: Props) => {
                     disabled={detailsSubmitted}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} md={4}>
                   <TextField
                     id="expense-amount-textfield"
                     value={amount}
@@ -111,9 +145,37 @@ const CreateExpense = ({ groupId }: Props) => {
                     type="number"
                     disabled={detailsSubmitted}
                     InputProps={{
-                      endAdornment: <Typography ml={1}>{"USD"}</Typography>,
+                      endAdornment: (
+                        <Typography ml={1}>
+                          {selectedGroup?.currency}
+                        </Typography>
+                      ),
                     }}
                   />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <FormControl fullWidth>
+                    <InputLabel id="expense-payor-select-label">
+                      {"Payor user"}
+                    </InputLabel>
+                    <Select
+                      id="expense-payor-select"
+                      labelId="expense-payor-select-label"
+                      value={payorUserId}
+                      onChange={handleOnChangePayorUser}
+                      label="Payor user"
+                      fullWidth
+                      disabled={detailsSubmitted}
+                    >
+                      {selectedGroup?.users.map((user) => {
+                        return (
+                          <MenuItem key={user.id} value={user.id}>
+                            {user.name}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl fullWidth>
@@ -133,16 +195,16 @@ const CreateExpense = ({ groupId }: Props) => {
                         <Box
                           sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
                         >
-                          {selected.map((value) => (
-                            <Chip key={value} label={value} />
+                          {selected.map((user) => (
+                            <Chip key={user.id} label={user.name} />
                           ))}
                         </Box>
                       )}
                     >
-                      {selectedGroup?.users.map((username, index) => {
+                      {selectedGroup?.users.map((user, index) => {
                         return (
-                          <MenuItem key={index} value={username}>
-                            {username}
+                          <MenuItem key={user.id} value={user}>
+                            {user.name}
                           </MenuItem>
                         );
                       })}
@@ -178,7 +240,12 @@ const CreateExpense = ({ groupId }: Props) => {
                 }
               />
               <CardContent>
-                <UsersShare users={users} amount={+amount} submit={submitAll} />
+                <UsersShare
+                  users={users}
+                  amount={+amount}
+                  submit={submitAll}
+                  currency={selectedGroup?.currency}
+                />
               </CardContent>
             </Card>
           </Grid>
