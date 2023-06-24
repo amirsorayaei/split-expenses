@@ -1,3 +1,19 @@
+import { store } from "@/redux/store";
+
+/**
+ * Formated number as string
+ * @param {number | string} number
+ * @returns {string}
+ */
+export const numberFormat = (number: number | string): string => {
+  return number !== null
+    ? number
+        .toString()
+        .replace(/\D[, .]/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    : "";
+};
+
 /**
  * Convert all digits in a string to english
  * @param {string} num
@@ -27,4 +43,24 @@ export const generateUniqueID = (list: any[]): number => {
   const lastItem = list.at(-1); // Get the last item of given list
   const generatedID = lastItem ? lastItem.id + 1 : 1; // Generate unique ID
   return generatedID;
+};
+
+/**
+ *
+ * @param {number} groupId
+ */
+export const getTotalExpenseOfGroup = (groupId?: number) => {
+  if (groupId) {
+    const expenses = store
+      .getState()
+      .group.groups.find((group) => group.id === groupId)?.expenses;
+
+    const total = expenses?.reduce((a, b) => {
+      return a + b.amount;
+    }, 0);
+
+    return numberFormat(total || 0);
+  }
+
+  return 0;
 };
