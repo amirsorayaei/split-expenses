@@ -104,7 +104,7 @@ export const groupSlice = createSlice({
         /**
          * Means that item exists
          */
-        if (givenExpenseIndex && givenExpenseIndex >= 0) {
+        if (givenExpenseIndex !== undefined && givenExpenseIndex >= 0) {
           /**
            * Update given expense details
            */

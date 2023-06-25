@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { Grid, Typography, TextField, Button } from "@mui/material";
 import { Group, User } from "@/core/resources/interfaces";
+import Snack from "@/components/Snack/Snack";
 
 interface Props {
   users: User[];
@@ -39,7 +40,7 @@ const UsersShare = ({ users, amount, submit, currency }: Props) => {
     }, 0);
 
     if (sharesSum !== amount) {
-      alert("Not Equal!");
+      Snack.warn("Not Equal !");
       return;
     }
 
@@ -50,7 +51,9 @@ const UsersShare = ({ users, amount, submit, currency }: Props) => {
     <>
       <Grid container spacing={2}>
         {users.map((user, index) => {
-          const share = user.share || amount / users.length;
+          const share = user.share?.toString()
+            ? user.share
+            : amount / users.length;
 
           return (
             <UserItem
