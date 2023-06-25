@@ -4,7 +4,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Provider } from "react-redux";
 import { CacheProvider, EmotionCache } from "@emotion/react";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, Portal } from "@mui/material";
 import { PersistGate } from "redux-persist/integration/react";
 
 import "@/assets/css/fonts.css";
@@ -14,6 +14,8 @@ import createEmotionCache from "@/theme/createEmotionCache";
 import ThemeProvider from "@/theme/ThemeProvider";
 import BaseLayout from "@/layouts/BaseLayout";
 import DialogAlert from "@/components/DialogAlert/DialogAlert";
+import SnackHOC from "@/components/Snack/SnackHOC";
+import SnackProvider from "@/components/Snack/SnackProvider";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -40,15 +42,18 @@ function Split(props: SplitAppProps) {
         />
       </Head>
       <ThemeProvider>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <CssBaseline />
-            <DialogAlert />
-            <BaseLayout>
-              <Component {...pageProps} />
-            </BaseLayout>
-          </PersistGate>
-        </Provider>
+        <SnackProvider>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <CssBaseline />
+              <DialogAlert />
+              <SnackHOC />
+              <BaseLayout>
+                <Component {...pageProps} />
+              </BaseLayout>
+            </PersistGate>
+          </Provider>
+        </SnackProvider>
       </ThemeProvider>
     </CacheProvider>
   );
