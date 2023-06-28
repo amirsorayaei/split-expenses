@@ -33,9 +33,7 @@ const Expenses = ({ group }: Props) => {
   };
 
   const minimizeTransactions = () => {
-    const users = store
-      .getState()
-      .group.groups.find((el) => el.id === group.id)?.users;
+    const users = group.users;
     const givers: { user: User; amount: number }[] = [];
     const receivers: { user: User; amount: number }[] = [];
     users?.forEach((user) => {

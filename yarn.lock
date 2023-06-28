@@ -2434,7 +2434,7 @@ process-nextick-args@~2.0.0:
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
 
-prop-types@^15.5.10, prop-types@^15.6.2, prop-types@^15.8.1:
+prop-types@^15.5.10, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -2486,6 +2486,13 @@ react-is@^18.0.0, react-is@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
+
+react-number-format@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-5.2.2.tgz#60ee1152b33fee9e522e13846da9c9bf30993404"
+  integrity sha512-wCh64Z1HCwXcO2dbgkeYIaB+Rmp/fcsH8kAeRtUkc46dv1pIrgDjie2WkOqKBw8YqyqhwNdYgNFNQuuY+iGJ/g==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-redux@^8.0.7:
   version "8.0.7"

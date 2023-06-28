@@ -4,10 +4,11 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { Grid, TextField, Button, Chip, Typography } from "@mui/material";
+import { Grid, Button, Chip, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import { User } from "@/core/resources/interfaces";
 import { generateUniqueID } from "@/core/resources/Functions";
+import TextField from "@/components/TextField/TextField";
 
 const SelectUsers = forwardRef((_props, ref) => {
   const [username, setUsername] = useState<string>("");
@@ -36,12 +37,6 @@ const SelectUsers = forwardRef((_props, ref) => {
     }
   };
 
-  const keyPress = (event: any) => {
-    if (event.keyCode == 13) {
-      addUser();
-    }
-  };
-
   const onDeleteUser = (index: number) => {
     const filteredUsers = users.filter((el, i) => i !== index);
     setUsers(filteredUsers);
@@ -55,7 +50,7 @@ const SelectUsers = forwardRef((_props, ref) => {
           value={username}
           onChange={handleOnChangeUser}
           label={"User Name"}
-          onKeyDown={keyPress}
+          handleSubmit={addUser}
           fullWidth
           helperText={
             <Typography variant="caption">

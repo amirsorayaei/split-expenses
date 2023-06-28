@@ -5,9 +5,11 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { Grid, Typography, TextField, Button } from "@mui/material";
-import { Group, User } from "@/core/resources/interfaces";
+import { Grid, Typography, Button } from "@mui/material";
+
+import { User } from "@/core/resources/interfaces";
 import Snack from "@/components/Snack/Snack";
+import TextField from "@/components/TextField/TextField";
 
 interface Props {
   users: User[];
@@ -100,7 +102,7 @@ const UserItem = forwardRef(
           onChange={handleOnChangeShare}
           label="Share"
           fullWidth
-          type="number"
+          inputMode="numeric"
           InputProps={{
             startAdornment: <Typography mr={1.5}>{user.name}</Typography>,
             endAdornment: <Typography ml={1.5}>{currency}</Typography>,
