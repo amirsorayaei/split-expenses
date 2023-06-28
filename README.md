@@ -1,34 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Split Expenses
 
-## Getting Started
+Split Expenses is a lightweight expense tracking application that helps you manage and track shared expenses with your friends, family, or colleagues. It simplifies the process of splitting bills and calculating each person's share, making it easier to settle debts and maintain financial transparency.
 
-First, run the development server:
+## Features
+
+- Create and manage multiple expense groups for different occasions or purposes.
+- Add expenses with details such as the description, amount, and the individuals involved.
+- Automatically calculates the owed amounts for each person based on the expense distribution.
+- Generate summary reports to view a group's overall balance and outstanding debts.
+- Keep track of settled expenses and mark them as paid.
+- User-friendly interface with intuitive controls and easy navigation.
+
+## Installation
+
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone https://github.com/amirsorayaei/split-expenses.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Navigate to the project directory:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd split-expenses
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. Install the required dependencies:
 
-## Learn More
+```bash
+yarn install
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Start the application:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+yarn dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+5. Access the application in your browser at `https://localhost:3000`
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Usage
+- Sign up or log in to your account.
+- Create a new expense group or select an existing one.
+- Add expenses by providing the necessary details and the individuals involved.
+- View the summary report to see the current balance and outstanding debts.
+- Settle expenses by marking them as paid once the debts are settled.
+- Explore other features and customize the application to fit your needs.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Contributing
+Contributions are welcome! If you would like to contribute to this project, please follow these guidelines:
+
+- Fork the repository.
+- Create a new branch for your feature or bug fix.
+- Make your changes and ensure that they're properly tested.
+- Commit your changes and push them to your fork.
+- Submit a pull request with a clear description of your changes.
+
+
+## Contact
+Amir Sorayaei: [LinkedIn](https://www.linkedin.com/in/amir-sorayaei) - [Email](mailto:amirsorayaeii@gmail.com)
+
+Project Link: [https://github.com/amirsorayaei/split-expenses](https://github.com/amirsorayaei/split-expenses)
+
+
