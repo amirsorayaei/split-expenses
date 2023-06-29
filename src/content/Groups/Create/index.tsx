@@ -4,7 +4,6 @@ import {
   Card,
   CardHeader,
   Grid,
-  TextField,
   CardContent,
   FormControl,
   Select,
@@ -24,6 +23,7 @@ import { useDispatch } from "react-redux";
 import { createGroup } from "@/redux/slices/groupSlice";
 import { Group, User } from "@/core/resources/interfaces";
 import { store } from "@/redux/store";
+import TextField from "@/components/TextField/TextField";
 
 interface SelectUsersRef {
   getUsers(): User[];

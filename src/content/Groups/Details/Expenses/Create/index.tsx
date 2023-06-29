@@ -5,7 +5,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  TextField,
   Select,
   MenuItem,
   FormControl,
@@ -25,6 +24,7 @@ import UsersShare from "./UsersShare";
 import { createExpense, updateExpense } from "@/redux/slices/groupSlice";
 import { useRouter } from "next/router";
 import { RootState } from "@/redux/store";
+import TextField from "@/components/TextField/TextField";
 
 interface Props {
   groupId: number;
@@ -142,7 +142,7 @@ const CreateExpense = ({ groupId, expenseId }: Props) => {
                     onChange={handleOnChangeAmount}
                     label="Amount"
                     fullWidth
-                    type="number"
+                    inputMode="numeric"
                     disabled={detailsSubmitted}
                     InputProps={{
                       endAdornment: (
