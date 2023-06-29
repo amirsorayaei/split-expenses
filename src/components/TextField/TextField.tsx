@@ -1,6 +1,6 @@
 import React from "react";
 import { TextField as MaterialTextField, TextFieldProps } from "@mui/material";
-import { NumericFormat } from "react-number-format";
+import { NumericFormat, NumericFormatProps } from "react-number-format";
 
 interface Props {
   handleSubmit?(): void;
@@ -17,10 +17,10 @@ const TextField = ({ handleSubmit, ...props }: Props & TextFieldProps) => {
   if (props.inputMode === "numeric") {
     return (
       <NumericFormat
-        {...props}
-        customInput={MaterialTextField}
+        customInput={MaterialTextField as any}
         onKeyDown={onKeyDown}
         thousandSeparator={","}
+        {...(props as NumericFormatProps)}
       />
     );
   }
