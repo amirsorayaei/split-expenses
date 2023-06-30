@@ -1,9 +1,10 @@
-import { Provider } from "react-redux";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 import Expenses from "@/content/Expenses";
 import { Group } from "@/utils/resources/interfaces";
-import { store } from "@/redux/store";
+import { renderWithProviders } from "@/utils/resources/utils-for-tests";
+
+jest.mock("next/router", () => require("next-router-mock"));
 
 describe("Several related tests on Expenses component", () => {
   it("Should render usernames with correct format", () => {
@@ -20,11 +21,7 @@ describe("Several related tests on Expenses component", () => {
     };
     const expectedOutput = "Amir - Hesam - Ali";
 
-    render(
-      <Provider store={store}>
-        <Expenses group={fakeGroup} />
-      </Provider>
-    );
+    renderWithProviders(<Expenses group={fakeGroup} />);
 
     const usersname = screen.getByTestId("group-usersname");
 
