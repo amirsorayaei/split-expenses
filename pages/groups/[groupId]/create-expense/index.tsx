@@ -1,6 +1,7 @@
-import CreateExpense from "@/content/Groups/Details/Expenses/Create";
-import Head from "next/head";
 import { useRouter } from "next/router";
+import Head from "next/head";
+
+import CreateExpense from "@/content/Expenses/Create";
 
 const CreateExpensePage = () => {
   const router = useRouter();
