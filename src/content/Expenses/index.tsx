@@ -9,7 +9,7 @@ import { deleteExpense } from "@/redux/slices/groupSlice";
 import ActionButtons from "@/components/ActionButtons";
 import { useRouter } from "next/router";
 import {
-  getTotalExpenseOfGroup,
+  getTotalAmountOfExpenses,
   numberFormat,
 } from "@/core/resources/Functions";
 
@@ -20,15 +20,13 @@ interface Props {
 const Expenses = ({ group }: Props) => {
   const [result, setResult] = useState<any[]>([]);
 
-  const dispatch = useDispatch();
-  const router = useRouter();
-
   const expenses =
     useSelector((state: RootState) =>
       state.group.groups.find((el) => el.id === group.id)
     )?.expenses || [];
 
   const onClickItem = (item: Expense) => {
+    const router = useRouter();
     router.push(`./${group.id}/expense/${item.id}`);
   };
 
@@ -105,9 +103,9 @@ const Expenses = ({ group }: Props) => {
     setResult(array);
   };
 
-  const getUsersName = () => {
+  const getUsersName = (users: User[]) => {
     let usersText = "";
-    group?.users.forEach((user, index) => {
+    users.forEach((user, index) => {
       usersText += user.name + " - ";
 
       /**
@@ -123,7 +121,7 @@ const Expenses = ({ group }: Props) => {
 
   const renderItem = (item: Expense) => {
     const onDeleteExpense = () => {
-      dispatch(deleteExpense({ groupId: group.id, expense: item }));
+      useDispatch()(deleteExpense({ groupId: group.id, expenseId: item.id }));
     };
 
     return (
@@ -172,10 +170,12 @@ const Expenses = ({ group }: Props) => {
         alignItems={"flex-start"}
         justifyContent={"space-between"}
       >
-        <Typography>{getUsersName()}</Typography>
-        <Typography>{`Total expense: ${getTotalExpenseOfGroup(group.id)} ${
-          group.currency
-        }`}</Typography>
+        <Typography data-testid="group-usersname">
+          {getUsersName(group.users)}
+        </Typography>
+        <Typography>{`Total expense: ${getTotalAmountOfExpenses(
+          group.expenses
+        )} ${group.currency}`}</Typography>
       </Box>
       <Table
         data={expenses}
