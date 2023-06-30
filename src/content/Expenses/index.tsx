@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { Button, TableCell, Typography, Box } from "@mui/material";
+import { useRouter } from "next/router";
 
 import Table from "@/components/Table";
-import { Expense, Group, User } from "@/core/resources/interfaces";
+import { Expense, Group, User } from "@/utils/resources/interfaces";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, store } from "@/redux/store";
+import { RootState } from "@/redux/store";
 import { deleteExpense } from "@/redux/slices/groupSlice";
 import ActionButtons from "@/components/ActionButtons";
-import { useRouter } from "next/router";
 import {
   getTotalAmountOfExpenses,
   numberFormat,
-} from "@/core/resources/Functions";
+} from "@/utils/resources/Functions";
 
 interface Props {
   group: Group;

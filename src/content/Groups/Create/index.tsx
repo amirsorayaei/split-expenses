@@ -14,16 +14,16 @@ import {
   useTheme,
   Box,
 } from "@mui/material";
-
-import PageTitle from "@/components/PageTitle";
-import Currencies from "@/core/db/Currencies.json";
-import SelectUsers from "./SelectUsers";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+
+import PageTitle from "@/components/PageTitle";
+import SelectUsers from "./SelectUsers";
 import { createGroup } from "@/redux/slices/groupSlice";
-import { Group, User } from "@/core/resources/interfaces";
+import { Group, User } from "@/utils/resources/interfaces";
 import { store } from "@/redux/store";
 import TextField from "@/components/TextField/TextField";
+import Currencies from "@/core/db/Currencies.json";
 
 interface SelectUsersRef {
   getUsers(): User[];

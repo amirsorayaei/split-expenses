@@ -1,14 +1,14 @@
 import React from "react";
 import { TableCell, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 import Table from "@/components/Table";
-import { Group } from "@/core/resources/interfaces";
-import { useDispatch, useSelector } from "react-redux";
+import { Group } from "@/utils/resources/interfaces";
 import { RootState } from "@/redux/store";
-import { useRouter } from "next/router";
 import ActionButtons from "@/components/ActionButtons";
 import { deleteGroup } from "@/redux/slices/groupSlice";
-import { getTotalAmountOfExpenses } from "@/core/resources/Functions";
+import { getTotalAmountOfExpenses } from "@/utils/resources/Functions";
 
 const GroupsTable = () => {
   const router = useRouter();

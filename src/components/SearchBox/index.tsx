@@ -18,7 +18,7 @@ import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import {
   convertToEnglishDigit,
   removeWhiteSpaceFromString,
-} from "@/core/resources/Functions";
+} from "@/utils/resources/Functions";
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
   ({ theme }) => `

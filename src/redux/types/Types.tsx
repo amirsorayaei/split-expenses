@@ -1,4 +1,4 @@
-import { Group } from "@/core/resources/interfaces";
+import { Group } from "@/utils/resources/interfaces";
 
 export interface GroupState {
   groups: Group[];

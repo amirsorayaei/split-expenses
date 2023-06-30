@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { Grid, Typography, Button } from "@mui/material";
 
-import { User } from "@/core/resources/interfaces";
+import { User } from "@/utils/resources/interfaces";
 import Snack from "@/components/Snack/Snack";
 import TextField from "@/components/TextField/TextField";
 

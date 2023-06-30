@@ -19,7 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import PageTitle from "@/components/PageTitle";
-import { Expense, User } from "@/core/resources/interfaces";
+import { Expense, User } from "@/utils/resources/interfaces";
 import UsersShare from "./UsersShare";
 import { createExpense, updateExpense } from "@/redux/slices/groupSlice";
 import { useRouter } from "next/router";

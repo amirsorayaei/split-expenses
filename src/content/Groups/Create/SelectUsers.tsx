@@ -6,8 +6,9 @@ import React, {
 } from "react";
 import { Grid, Button, Chip, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import { User } from "@/core/resources/interfaces";
-import { generateUniqueID } from "@/core/resources/Functions";
+
+import { User } from "@/utils/resources/interfaces";
+import { generateUniqueID } from "@/utils/resources/Functions";
 import TextField from "@/components/TextField/TextField";
 
 const SelectUsers = forwardRef((_props, ref) => {
