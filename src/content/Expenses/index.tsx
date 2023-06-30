@@ -20,13 +20,15 @@ interface Props {
 const Expenses = ({ group }: Props) => {
   const [result, setResult] = useState<any[]>([]);
 
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const expenses =
     useSelector((state: RootState) =>
       state.group.groups.find((el) => el.id === group.id)
     )?.expenses || [];
 
   const onClickItem = (item: Expense) => {
-    const router = useRouter();
     router.push(`./${group.id}/expense/${item.id}`);
   };
 
@@ -121,7 +123,7 @@ const Expenses = ({ group }: Props) => {
 
   const renderItem = (item: Expense) => {
     const onDeleteExpense = () => {
-      useDispatch()(deleteExpense({ groupId: group.id, expenseId: item.id }));
+      dispatch(deleteExpense({ groupId: group.id, expenseId: item.id }));
     };
 
     return (
