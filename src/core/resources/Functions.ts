@@ -1,4 +1,4 @@
-import { store } from "@/redux/store";
+import { Expense } from "./interfaces";
 
 /**
  * Formated number as string
@@ -47,20 +47,17 @@ export const generateUniqueID = (list: any[]): number => {
 
 /**
  *
- * @param {number} groupId
+ * @param {Expense[]} expenses
+ * @returns {string}
  */
-export const getTotalExpenseOfGroup = (groupId?: number) => {
-  if (groupId) {
-    const expenses = store
-      .getState()
-      .group.groups.find((group) => group.id === groupId)?.expenses;
-
-    const total = expenses?.reduce((a, b) => {
+export const getTotalAmountOfExpenses = (expenses?: Expense[]): string => {
+  if (expenses) {
+    const total = expenses.reduce((a, b) => {
       return a + b.amount;
     }, 0);
 
     return numberFormat(total || 0);
   }
 
-  return 0;
+  return "0";
 };

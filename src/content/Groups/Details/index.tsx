@@ -1,11 +1,11 @@
-import { Container } from "@mui/material";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { Container } from "@mui/material";
 
 import PageTitle from "@/components/PageTitle";
-import Expenses from "./Expenses";
-import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import EmptyContent from "@/components/EmptyContent";
+import Expenses from "@/content/Expenses";
 
 interface Props {
   id: number;

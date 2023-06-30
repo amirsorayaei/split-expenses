@@ -1,9 +1,9 @@
+import moment from "moment";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { Expense, Group } from "@/core/resources/interfaces";
-import { GroupState } from "../types/Types";
 import { generateUniqueID } from "@/core/resources/Functions";
-import moment from "moment";
+import { GroupState } from "../types/Types";
 
 const initialState: GroupState = {
   groups: [],
@@ -48,11 +48,11 @@ export const groupSlice = createSlice({
       }
     },
     deleteGroup: (state, param) => {
-      const { payload }: { payload: Group } = param;
+      const { payload }: { payload: number } = param;
       /**
        * Remove given group from the list
        */
-      const filteredGroups = state.groups.filter((el) => el.id !== payload.id);
+      const filteredGroups = state.groups.filter((el) => el.id !== payload);
       state.groups = filteredGroups;
     },
     createExpense: (state, param) => {
@@ -114,7 +114,7 @@ export const groupSlice = createSlice({
       }
     },
     deleteExpense: (state, param) => {
-      const { payload }: { payload: { groupId: number; expense: Expense } } =
+      const { payload }: { payload: { groupId: number; expenseId: number } } =
         param;
       /**
        * Find the given group index with groupId
@@ -131,7 +131,7 @@ export const groupSlice = createSlice({
          * Remove given expense from the list
          */
         const filteredExpenses = givenGroup.expenses?.filter(
-          (el) => el.id !== payload.expense.id
+          (el) => el.id !== payload.expenseId
         );
         givenGroup.expenses = filteredExpenses;
       }
