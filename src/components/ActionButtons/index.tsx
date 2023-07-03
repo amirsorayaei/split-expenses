@@ -1,4 +1,4 @@
-import { IconButton, Tooltip, useTheme } from "@mui/material";
+import { IconButton, Tooltip, Typography, useTheme } from "@mui/material";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import DialogAlert, { DialogProps } from "../DialogAlert/DialogAlert";
@@ -40,6 +40,7 @@ const ActionButtons = ({
     <>
       {!!onEdit && (
         <Tooltip
+          data-testid="Edit"
           disableHoverListener={disableHoverListener}
           title="Edit"
           arrow
@@ -61,6 +62,7 @@ const ActionButtons = ({
       )}
       {!!onDelete && (
         <Tooltip
+          data-testid="Delete"
           disableHoverListener={disableHoverListener}
           title="Delete"
           arrow
