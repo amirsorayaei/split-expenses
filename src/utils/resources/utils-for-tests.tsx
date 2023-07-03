@@ -4,6 +4,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 // As a basic setup, import your same slice reducers
 import GroupReducer from "@/redux/slices/groupSlice";
+import ThemeProvider from "@/theme/ThemeProvider";
 
 export function renderWithProviders(
   ui: any,
@@ -18,7 +19,11 @@ export function renderWithProviders(
   }: any = {}
 ) {
   function Wrapper({ children }: { children: any }) {
-    return <Provider store={store}>{children}</Provider>;
+    return (
+      <ThemeProvider>
+        <Provider store={store}>{children}</Provider>
+      </ThemeProvider>
+    );
   }
 
   // Return an object with the store and all of RTL's query functions
