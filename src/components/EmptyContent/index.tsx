@@ -13,7 +13,9 @@ const EmptyContent = ({ message }: Props) => {
       justifyContent={"center"}
       my={5}
     >
-      <Typography variant={"h4"}>{message}</Typography>
+      <Typography data-testid="empty-message" variant={"h4"}>
+        {message}
+      </Typography>
     </Box>
   );
 };
