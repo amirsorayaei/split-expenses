@@ -79,8 +79,14 @@ class DialogAlert extends Component<Props, State> {
 
   render() {
     return (
-      <Dialog open={this.state.visible} onClose={this.onClickCancel}>
-        <DialogTitle textAlign={"center"}>{this.state.title}</DialogTitle>
+      <Dialog
+        data-testid={"dialog-alert"}
+        open={this.state.visible}
+        onClose={this.onClickCancel}
+      >
+        <DialogTitle data-testid={"dialog-title"} textAlign={"center"}>
+          {this.state.title}
+        </DialogTitle>
         <Grid
           maxWidth={450}
           flex={1}
@@ -91,11 +97,14 @@ class DialogAlert extends Component<Props, State> {
           px={3}
           pb={2}
         >
-          <Typography textAlign={"center"}>{this.state.message}</Typography>
+          <Typography data-testid={"dialog-message"} textAlign={"center"}>
+            {this.state.message}
+          </Typography>
           <Grid container spacing={1.5} pt={3}>
             {!!this.state.cancelBtn && (
               <Grid item xs={6}>
                 <Button
+                  data-testid={"dialog-cancel-btn"}
                   color={this.state.color}
                   variant="outlined"
                   fullWidth
@@ -107,6 +116,7 @@ class DialogAlert extends Component<Props, State> {
             )}
             <Grid item xs={!!this.state.cancelBtn ? 6 : 12}>
               <Button
+                data-testid={"dialog-confirm-btn"}
                 color={this.state.color}
                 variant="contained"
                 fullWidth

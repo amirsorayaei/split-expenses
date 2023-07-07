@@ -11,7 +11,7 @@ import "@/assets/css/fonts.css";
 import { persistor, store } from "@/redux/store";
 import ThemeProvider from "@/theme/ThemeProvider";
 import BaseLayout from "@/layouts/BaseLayout";
-import DialogAlert from "@/components/DialogAlert/DialogAlert";
+import DialogAlert from "@/components/DialogAlert";
 import SnackHOC from "@/components/Snack/SnackHOC";
 import SnackProvider from "@/components/Snack/SnackProvider";
 
