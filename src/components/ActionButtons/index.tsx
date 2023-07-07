@@ -1,7 +1,8 @@
-import { IconButton, Tooltip, Typography, useTheme } from "@mui/material";
+import { IconButton, Tooltip, useTheme } from "@mui/material";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-import DialogAlert, { DialogProps } from "../DialogAlert/DialogAlert";
+
+import DialogAlert, { DialogProps } from "../DialogAlert";
 
 interface Props {
   onDelete?(): void;
