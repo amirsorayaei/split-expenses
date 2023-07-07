@@ -5,8 +5,11 @@ import { Provider } from "react-redux";
 // As a basic setup, import your same slice reducers
 import GroupReducer from "@/redux/slices/groupSlice";
 import ThemeProvider from "@/theme/ThemeProvider";
+import SnackProvider from "@/components/Snack/SnackProvider";
+import DialogAlert from "@/components/DialogAlert";
+import SnackHOC from "@/components/Snack/SnackHOC";
 
-export function renderWithProviders(
+export function renderWithUtils(
   ui: any,
   {
     preloadedState = {},
@@ -21,7 +24,13 @@ export function renderWithProviders(
   function Wrapper({ children }: { children: any }) {
     return (
       <ThemeProvider>
-        <Provider store={store}>{children}</Provider>
+        <SnackProvider>
+          <Provider store={store}>
+            <DialogAlert />
+            <SnackHOC />
+            {children}
+          </Provider>
+        </SnackProvider>
       </ThemeProvider>
     );
   }

@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 
 import Expenses from "@/content/Expenses";
 import { Group } from "@/utils/resources/interfaces";
-import { renderWithProviders } from "@/utils/resources/utils-for-tests";
+import { renderWithUtils } from "@/utils/resources/utils-for-tests";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -21,7 +21,7 @@ describe("Several related tests on Expenses component", () => {
     };
     const expectedOutput = "Amir - Hesam - Ali";
 
-    renderWithProviders(<Expenses group={fakeGroup} />);
+    renderWithUtils(<Expenses group={fakeGroup} />);
 
     const usersname = screen.getByTestId("group-usersname");
 
