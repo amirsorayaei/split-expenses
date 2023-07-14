@@ -56,12 +56,12 @@ const CreateExpense = ({ groupId, expenseId }: Props) => {
 
   const router = useRouter();
 
-  const handleOnChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+  const handleOnChangeName = (value: string) => {
+    setName(value);
   };
 
-  const handleOnChangeAmount = (event: ChangeEvent<HTMLInputElement>) => {
-    setAmount(event.target.value);
+  const handleOnChangeAmount = (value: string) => {
+    setAmount(value);
   };
 
   const handleOnChangePayorUser = (
@@ -129,7 +129,7 @@ const CreateExpense = ({ groupId, expenseId }: Props) => {
                   <TextField
                     id="expense-name-textfield"
                     value={name}
-                    onChange={handleOnChangeName}
+                    onChangeText={handleOnChangeName}
                     label="Name"
                     fullWidth
                     disabled={detailsSubmitted}
@@ -139,7 +139,7 @@ const CreateExpense = ({ groupId, expenseId }: Props) => {
                   <TextField
                     id="expense-amount-textfield"
                     value={amount}
-                    onChange={handleOnChangeAmount}
+                    onChangeText={handleOnChangeAmount}
                     label="Amount"
                     fullWidth
                     inputMode="numeric"

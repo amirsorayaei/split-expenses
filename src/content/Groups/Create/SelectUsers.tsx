@@ -21,8 +21,8 @@ const SelectUsers = forwardRef((_props, ref) => {
     },
   }));
 
-  const handleOnChangeUser = (event: ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+  const handleOnChangeUser = (value: string) => {
+    setUsername(value);
   };
 
   const addUser = () => {
@@ -49,7 +49,7 @@ const SelectUsers = forwardRef((_props, ref) => {
         <TextField
           id="user-name-textfield"
           value={username}
-          onChange={handleOnChangeUser}
+          onChangeText={handleOnChangeUser}
           label={"User Name"}
           handleSubmit={addUser}
           fullWidth

@@ -90,8 +90,8 @@ const UserItem = forwardRef(
       },
     }));
 
-    const handleOnChangeShare = (event: ChangeEvent<HTMLInputElement>) => {
-      setShare(event.target.value);
+    const handleOnChangeShare = (value: string) => {
+      setShare(value);
     };
 
     return (
@@ -99,7 +99,7 @@ const UserItem = forwardRef(
         <TextField
           id={`user-share-${index}-textfield`}
           value={share}
-          onChange={handleOnChangeShare}
+          onChangeText={handleOnChangeShare}
           label="Share"
           fullWidth
           inputMode="numeric"

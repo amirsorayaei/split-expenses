@@ -41,8 +41,8 @@ const CreateGroup = () => {
 
   const theme = useTheme();
 
-  const handleOnChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+  const handleOnChangeName = (value: string) => {
+    setName(value);
   };
 
   const handleOnChangeCurrency = (event: SelectChangeEvent<string>) => {
@@ -87,7 +87,7 @@ const CreateGroup = () => {
                   <TextField
                     id="group-name-textfield"
                     value={name}
-                    onChange={handleOnChangeName}
+                    onChangeText={handleOnChangeName}
                     label="Name"
                     fullWidth
                   />
