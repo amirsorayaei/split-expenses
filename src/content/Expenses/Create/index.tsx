@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 import {
   Container,
   Grid,
@@ -12,17 +12,16 @@ import {
   SelectChangeEvent,
   Box,
   Chip,
-  useTheme,
   Typography,
   Button,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 import PageTitle from "@/components/PageTitle";
 import { Expense, User } from "@/utils/resources/interfaces";
 import UsersShare from "./UsersShare";
 import { createExpense, updateExpense } from "@/redux/slices/groupSlice";
-import { useRouter } from "next/router";
 import { RootState } from "@/redux/store";
 import TextField from "@/components/TextField/TextField";
 

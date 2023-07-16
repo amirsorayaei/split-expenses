@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { OptionsObject, SnackbarKey, SnackbarMessage } from "notistack";
-import { Button } from "@mui/material";
 
 interface Props {
   enqueueSnackbar(
@@ -14,7 +13,7 @@ class Snack extends Component<Props> {
   static myComponentInstance: { props: Props };
 
   static error(message: SnackbarMessage, options?: OptionsObject) {
-    const { enqueueSnackbar, closeSnackbar } = Snack.myComponentInstance.props;
+    const { enqueueSnackbar } = Snack.myComponentInstance.props;
     enqueueSnackbar(message, {
       variant: "error",
       ...options,
@@ -22,7 +21,7 @@ class Snack extends Component<Props> {
   }
 
   static info(message: SnackbarMessage, options?: OptionsObject) {
-    const { enqueueSnackbar, closeSnackbar } = Snack.myComponentInstance.props;
+    const { enqueueSnackbar } = Snack.myComponentInstance.props;
     enqueueSnackbar(message, {
       variant: "info",
       ...options,
@@ -30,7 +29,7 @@ class Snack extends Component<Props> {
   }
 
   static warn(message: SnackbarMessage, options?: OptionsObject) {
-    const { enqueueSnackbar, closeSnackbar } = Snack.myComponentInstance.props;
+    const { enqueueSnackbar } = Snack.myComponentInstance.props;
     enqueueSnackbar(message, {
       variant: "warning",
       ...options,
@@ -38,7 +37,7 @@ class Snack extends Component<Props> {
   }
 
   static success(message: SnackbarMessage, options?: OptionsObject) {
-    const { enqueueSnackbar, closeSnackbar } = Snack.myComponentInstance.props;
+    const { enqueueSnackbar } = Snack.myComponentInstance.props;
     enqueueSnackbar(message, {
       variant: "success",
       ...options,
