@@ -26,14 +26,22 @@ const PageTitle: FC<PageTitleProps> = ({
         {...rest}
       >
         <Grid item>
-          <Typography variant="h1" component="h1" gutterBottom>
+          <Typography
+            data-testid="page-title-heading"
+            variant="h1"
+            component="h1"
+            gutterBottom
+          >
             {heading}
           </Typography>
-          <Typography variant="subtitle2">{subHeading}</Typography>
+          <Typography data-testid="page-title-subheading" variant="subtitle2">
+            {subHeading}
+          </Typography>
         </Grid>
         {!!buttonTitle && (
           <Grid item>
             <Button
+              data-testid="page-title-button"
               sx={{ mt: { xs: 2, md: 0 } }}
               variant="contained"
               color={"secondary"}
