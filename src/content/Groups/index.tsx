@@ -1,8 +1,9 @@
 import React from "react";
 import { Container } from "@mui/material";
+import { useRouter } from "next/router";
+
 import PageTitle from "@/components/PageTitle";
 import GroupsTable from "./GroupsTable";
-import { useRouter } from "next/router";
 
 const Groups = () => {
   const router = useRouter();
