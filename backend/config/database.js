@@ -1,18 +1,33 @@
 import { Sequelize } from "sequelize";
 
+if (
+  !process.env.DB_HOST ||
+  !process.env.DB_PORT ||
+  !process.env.DB_USER ||
+  !process.env.DB_PASSWORD ||
+  !process.env.DB_NAME
+) {
+  throw new Error("Missing database configuration in environment variables");
+}
+
+const isProduction = process.env.NODE_ENV === "production";
+
 const sequelize = new Sequelize({
   dialect: "postgres",
-  host: "aws-0-ap-south-1.pooler.supabase.com",
-  port: 6543,
-  username: "postgres.ofemcatjnapnvyvqlltn",
-  password: "Shahin_rad@2267",
-  database: "postgres",
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  pool: {
+    max: 10,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
   },
+  dialectOptions: isProduction
+    ? { ssl: { require: true, rejectUnauthorized: false } }
+    : {},
 });
 
 export default sequelize;

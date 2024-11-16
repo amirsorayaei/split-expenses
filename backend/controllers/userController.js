@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { formatResponse } from "../util/responseUtil";
-import User from "../models/User";
+import { User } from "../models/User";
 
 export const PostSignup = async (req, res) => {
   const { email, password } = req.body;
@@ -21,13 +21,18 @@ export const PostSignup = async (req, res) => {
         );
     }
 
-    if (!email || !password || email != String || password != String) {
+    if (
+      !email ||
+      !password ||
+      typeof email !== "string" ||
+      typeof password !== "string"
+    ) {
       return res
         .status(400)
         .json(
           formatResponse(
             400,
-            "Email and Password fields are required. both should be an array"
+            "Email and Password fields are required. both should be a string"
           )
         );
     }
@@ -66,7 +71,7 @@ export const PostLogin = async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "720h",
+      expiresIn: "365d",
     });
 
     res.json({ token });
