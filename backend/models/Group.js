@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
 
-const Expense = sequelize.define("expense", {
+export const Group = sequelize.define("group", {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -10,18 +10,13 @@ const Expense = sequelize.define("expense", {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  amount: {
-    type: DataTypes.DECIMAL(10, 2),
+  currency: {
+    type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: "USD",
   },
-  payorUser: {
-    type: DataTypes.JSON,
-    allowNull: false,
-  },
-  usersShare: {
+  users: {
     type: DataTypes.JSON,
     allowNull: false,
   },
 });
-
-export default Expense;
