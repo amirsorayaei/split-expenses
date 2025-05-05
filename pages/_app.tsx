@@ -7,6 +7,7 @@ import { CssBaseline } from "@mui/material";
 import { PersistGate } from "redux-persist/integration/react";
 
 import "@/assets/css/fonts.css";
+import "../styles/globals.css";
 
 import { persistor, store } from "@/redux/store";
 import ThemeProvider from "@/theme/ThemeProvider";
@@ -23,6 +24,12 @@ interface SplitAppProps extends AppProps {
   Component: NextPageWithLayout;
 }
 
+export const metadata = {
+  title: "Split Expenses - Easily Manage and Split Group Expenses",
+  description:
+    "Split Expenses is a simple, intuitive app for tracking, managing, and splitting expenses with friends, roommates, and groups.",
+};
+
 function Split(props: SplitAppProps) {
   const { Component, pageProps } = props;
   // const getLayout = Component.getLayout ?? ((page) => page);
@@ -30,7 +37,7 @@ function Split(props: SplitAppProps) {
   return (
     <>
       <Head>
-        <title>Split</title>
+        <title>Split Expenses - Easily Manage and Split Group Expenses</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
