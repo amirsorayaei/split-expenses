@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 
-import CustomTable from "@/components/Table";
-import { Expense, Group, User } from "@/utils/resources/interfaces";
-import { RootState } from "@/redux/store";
-import { deleteExpense } from "@/redux/slices/groupSlice";
-import ActionButtons from "@/components/ActionButtons";
+import CustomTable from "@/src/components/Table";
+import { Expense, Group, User } from "@/src/utils/resources/interfaces";
+import { RootState } from "@/src/redux/store";
+import { deleteExpense } from "@/src/redux/slices/groupSlice";
+import ActionButtons from "@/src/components/ActionButtons";
 import {
   getTotalAmountOfExpenses,
   numberFormat,
-} from "@/utils/resources/Functions";
+} from "@/src/utils/resources/Functions";
 
 interface Props {
   group: Group;

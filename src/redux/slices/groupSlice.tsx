@@ -1,8 +1,8 @@
 import moment from "moment";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { Expense, Group } from "@/utils/resources/interfaces";
-import { generateUniqueID } from "@/utils/resources/Functions";
+import { Expense, Group } from "@/src/utils/resources/interfaces";
+import { generateUniqueID } from "@/src/utils/resources/Functions";
 import { GroupState } from "../types/Types";
 
 const initialState: GroupState = {

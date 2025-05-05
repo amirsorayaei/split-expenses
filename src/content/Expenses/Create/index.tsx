@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
-import PageTitle from "@/components/PageTitle";
-import { Expense, User } from "@/utils/resources/interfaces";
+import PageTitle from "@/src/components/PageTitle";
+import { Expense, User } from "@/src/utils/resources/interfaces";
 import UsersShare from "./UsersShare";
-import { createExpense, updateExpense } from "@/redux/slices/groupSlice";
-import { RootState } from "@/redux/store";
+import { createExpense, updateExpense } from "@/src/redux/slices/groupSlice";
+import { RootState } from "@/src/redux/store";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {

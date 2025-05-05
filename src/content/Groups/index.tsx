@@ -1,5 +1,5 @@
 import React from "react";
-import PageTitle from "@/components/PageTitle";
+import PageTitle from "@/src/components/PageTitle";
 import GroupsTable from "./GroupsTable";
 
 const Groups = () => {

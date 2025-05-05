@@ -1,14 +1,14 @@
 import React from "react";
 import { TableCell } from "@/components/ui/table";
-import CustomTable from "@/components/Table";
-import ActionButtons from "@/components/ActionButtons";
+import CustomTable from "@/src/components/Table";
+import ActionButtons from "@/src/components/ActionButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
-import { Group, Expense } from "@/utils/resources/interfaces";
-import { RootState } from "@/redux/store";
-import { deleteGroup } from "@/redux/slices/groupSlice";
-import { getTotalAmountOfExpenses } from "@/utils/resources/Functions";
+import { Group, Expense } from "@/src/utils/resources/interfaces";
+import { RootState } from "@/src/redux/store";
+import { deleteGroup } from "@/src/redux/slices/groupSlice";
+import { getTotalAmountOfExpenses } from "@/src/utils/resources/Functions";
 
 interface Props {
   groupId?: number;

@@ -1,4 +1,6 @@
+import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Receipt,
@@ -22,6 +24,14 @@ import { Input } from "@/components/ui/input";
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
+      <Head>
+        <title>Split Expenses - Easily Manage and Split Group Expenses</title>
+        <meta
+          name="description"
+          content="Split Expenses is a simple, intuitive app for tracking, managing, and splitting expenses with friends, roommates, and groups."
+        />
+      </Head>
+
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2 font-bold text-xl">
@@ -87,6 +97,14 @@ export default function LandingPage() {
               <div className="flex items-center justify-center">
                 <Card className="w-full max-w-[500px] overflow-hidden">
                   <div className="relative aspect-video">
+                    <Image
+                      src="/images/hero.jpeg"
+                      width={500}
+                      height={300}
+                      alt="Split Expenses Dashboard"
+                      className="object-cover rounded-lg shadow-lg"
+                      priority // Add this to prioritize loading this image
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-background/20 flex items-end p-6">
                       <div className="space-y-2 text-white">
                         <h3 className="font-bold">Manage All Your Expenses</h3>

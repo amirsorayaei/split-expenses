@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import Groups from "@/content/Groups";
+import Groups from "@/src/content/Groups";
 
 const GroupsPage = () => {
   return (

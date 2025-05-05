@@ -1,14 +1,15 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import PageTitle from "@/components/PageTitle";
-import { RootState } from "@/redux/store";
+import PageTitle from "@/src/components/PageTitle";
+import { RootState } from "@/src/redux/store";
 import GroupsTable from "../GroupsTable";
 import { Button } from "@/components/ui/button";
 
 const GroupDetails = () => {
   const router = useRouter();
   const { id } = router.query;
+
   const selectedGroup = useSelector((state: RootState) =>
     state.group.groups.find((item) => item.id === +id!)
   );

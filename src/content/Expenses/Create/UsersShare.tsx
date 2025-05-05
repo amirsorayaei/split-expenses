@@ -6,8 +6,8 @@ import React, {
 } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { User } from "@/utils/resources/interfaces";
-import Snack from "@/components/Snack/Snack";
+import { User } from "@/src/utils/resources/interfaces";
+import Snack from "@/src/components/Snack/Snack";
 
 interface Props {
   users: User[];

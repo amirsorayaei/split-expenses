@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-import CreateExpense from "@/content/Expenses/Create";
+import CreateExpense from "@/src/content/Expenses/Create";
 
 const CreateExpensePage = () => {
   const router = useRouter();

@@ -2,11 +2,11 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
-import PageTitle from "@/components/PageTitle";
+import PageTitle from "@/src/components/PageTitle";
 import SelectUsers from "./SelectUsers";
-import { createGroup } from "@/redux/slices/groupSlice";
-import { Group, User } from "@/utils/resources/interfaces";
-import { store } from "@/redux/store";
+import { createGroup } from "@/src/redux/slices/groupSlice";
+import { Group, User } from "@/src/utils/resources/interfaces";
+import { store } from "@/src/redux/store";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import Currencies from "@/core/db/Currencies.json";
+import Currencies from "@/src/core/db/Currencies.json";
 
 interface SelectUsersRef {
   getUsers(): User[];

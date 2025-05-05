@@ -1,4 +1,4 @@
-import CreateGroup from "@/content/Groups/Create";
+import CreateGroup from "@/src/content/Groups/Create";
 import Head from "next/head";
 
 const CreateGroupPage = () => {

@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
-import { User } from "@/utils/resources/interfaces";
+import { User } from "@/src/utils/resources/interfaces";
 
 export interface SelectUsersRef {
   getUsers(): User[];

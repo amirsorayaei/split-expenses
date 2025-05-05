@@ -11,7 +11,7 @@ import { Search } from "lucide-react";
 import {
   convertToEnglishDigit,
   removeWhiteSpaceFromString,
-} from "@/utils/resources/Functions";
+} from "@/src/utils/resources/Functions";
 
 interface Props {
   onSearch(value: string): void;

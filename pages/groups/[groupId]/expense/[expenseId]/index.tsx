@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import CreateExpense from "@/content/Expenses/Create";
+import CreateExpense from "@/src/content/Expenses/Create";
 
 const GroupDetailsPage = () => {
   const router = useRouter();
