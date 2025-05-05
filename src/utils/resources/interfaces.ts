@@ -20,8 +20,3 @@ export interface Expense {
   payor: User;
   createdAt?: string;
 }
-
-export interface MaterialSelect {
-  id: number;
-  name: string;
-}

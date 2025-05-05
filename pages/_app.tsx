@@ -3,7 +3,6 @@ import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Provider } from "react-redux";
-import { CssBaseline } from "@mui/material";
 import { PersistGate } from "redux-persist/integration/react";
 
 import "@/assets/css/fonts.css";
@@ -32,7 +31,6 @@ export const metadata = {
 
 function Split(props: SplitAppProps) {
   const { Component, pageProps } = props;
-  // const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <>
@@ -47,7 +45,6 @@ function Split(props: SplitAppProps) {
         <SnackProvider>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              <CssBaseline />
               <DialogAlert />
               <SnackHOC />
               <BaseLayout>

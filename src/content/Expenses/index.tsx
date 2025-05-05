@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Button, TableCell, Typography, Box } from "@mui/material";
 import { useRouter } from "next/router";
-
-import Table from "@/components/Table";
-import { Expense, Group, User } from "@/utils/resources/interfaces";
 import { useDispatch, useSelector } from "react-redux";
+
+import CustomTable from "@/components/Table";
+import { Expense, Group, User } from "@/utils/resources/interfaces";
 import { RootState } from "@/redux/store";
 import { deleteExpense } from "@/redux/slices/groupSlice";
 import ActionButtons from "@/components/ActionButtons";
@@ -18,7 +17,7 @@ interface Props {
 }
 
 const Expenses = ({ group }: Props) => {
-  const [result, setResult] = useState<any[]>([]);
+  const [result, setResult] = useState<string[]>([]);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -126,99 +125,67 @@ const Expenses = ({ group }: Props) => {
       dispatch(deleteExpense({ groupId: group.id, expenseId: item.id }));
     };
 
-    return (
-      <>
-        <TableCell>
-          <Typography>{item.id}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.name}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.users?.length + " " + "people"}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.payor.name}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>
-            {`${numberFormat(item.amount)} ${group.currency}`}
-          </Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.createdAt}</Typography>
-        </TableCell>
-        <TableCell>
-          <ActionButtons
-            onDelete={onDeleteExpense}
-            dialogSettings={{
-              title: "Delete expense?",
-              message: "Do you want to delete this expense?",
-              confirmBtn: "Yes",
-              cancelBtn: "No",
-            }}
-          />
-        </TableCell>
-      </>
-    );
+    return [
+      <div key="id">{item.id}</div>,
+      <div key="name">{item.name}</div>,
+      <div key="users">{item.users?.length + " people"}</div>,
+      <div key="payor">{item.payor.name}</div>,
+      <div key="amount">{`${numberFormat(item.amount)} ${
+        group.currency
+      }`}</div>,
+      <div key="created">{item.createdAt}</div>,
+      <div key="actions">
+        <ActionButtons
+          onDelete={onDeleteExpense}
+          dialogSettings={{
+            title: "Delete expense?",
+            message: "Do you want to delete this expense?",
+          }}
+        />
+      </div>,
+    ];
   };
 
   return (
-    <>
-      <Box
-        px={2}
-        pb={1}
-        display={"flex"}
-        alignItems={"flex-start"}
-        justifyContent={"space-between"}
-      >
-        <Typography data-testid="group-usersname">
-          {getUsersName(group.users)}
-        </Typography>
-        <Typography>{`Total expense: ${getTotalAmountOfExpenses(
-          group.expenses
-        )} ${group.currency}`}</Typography>
-      </Box>
-      <Table
+    <div className="space-y-6">
+      <div className="flex items-start justify-between px-4 pb-2">
+        <div data-testid="group-usersname">{getUsersName(group.users)}</div>
+        <div>{`Total expense: ${getTotalAmountOfExpenses(group.expenses)} ${
+          group.currency
+        }`}</div>
+      </div>
+      <CustomTable
         data={expenses}
         renderItem={renderItem}
-        title={"Expenses Table List"}
-        emptyMessage={"No expenses found !"}
+        title="Expenses Table List"
+        emptyMessage="No expenses found!"
         onClickItem={onClickItem}
         tableColumns={[
-          { text: "ID" },
-          { text: "Name" },
-          { text: "Users count" },
-          { text: "Payor" },
-          { text: "Expense amount" },
-          { text: "Created at" },
+          { text: "ID", align: "left" as const },
+          { text: "Name", align: "left" as const },
+          { text: "Users count", align: "left" as const },
+          { text: "Payor", align: "left" as const },
+          { text: "Expense amount", align: "left" as const },
+          { text: "Created at", align: "left" as const },
+          { text: "Actions", align: "right" as const },
         ]}
       />
-      <Box
-        p={2}
-        pb={0}
-        display={"flex"}
-        alignItems={"flex-start"}
-        justifyContent={"space-between"}
-      >
-        <Box>
-          {result.map((item, index) => {
-            return (
-              <Typography key={index}>
-                {index + 1} - {item}
-              </Typography>
-            );
-          })}
-        </Box>
-        <Button
-          variant="contained"
-          color={"secondary"}
+      <div className="flex items-start justify-between p-4">
+        <div className="space-y-2">
+          {result.map((item, index) => (
+            <div key={index}>
+              {index + 1} - {item}
+            </div>
+          ))}
+        </div>
+        <button
+          className="rounded-md bg-secondary px-4 py-2 text-secondary-foreground hover:bg-secondary/80"
           onClick={minimizeTransactions}
         >
-          {"Calculate"}
-        </Button>
-      </Box>
-    </>
+          Calculate
+        </button>
+      </div>
+    </div>
   );
 };
 

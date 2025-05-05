@@ -1,19 +1,4 @@
 import { useState, useRef } from "react";
-import {
-  Container,
-  Card,
-  CardHeader,
-  Grid,
-  CardContent,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
-  SelectChangeEvent,
-  Button,
-  useTheme,
-  Box,
-} from "@mui/material";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
@@ -22,7 +7,16 @@ import SelectUsers from "./SelectUsers";
 import { createGroup } from "@/redux/slices/groupSlice";
 import { Group, User } from "@/utils/resources/interfaces";
 import { store } from "@/redux/store";
-import TextField from "@/components/TextField/TextField";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import Currencies from "@/core/db/Currencies.json";
 
 interface SelectUsersRef {
@@ -36,23 +30,17 @@ const CreateGroup = () => {
   const selectUsersRef = useRef<SelectUsersRef>(null);
 
   const dispatch = useDispatch();
-
   const router = useRouter();
-
-  const theme = useTheme();
 
   const handleOnChangeName = (value: string) => {
     setName(value);
   };
 
-  const handleOnChangeCurrency = (event: SelectChangeEvent<string>) => {
-    setCurrency(event.target.value);
+  const handleOnChangeCurrency = (value: string) => {
+    setCurrency(value);
   };
 
   const onClickSubmit = () => {
-    /**
-     * Groups created with given details
-     */
     const group: Group = {
       name,
       currency,
@@ -60,85 +48,62 @@ const CreateGroup = () => {
     };
     dispatch(createGroup(group));
 
-    /**
-     * Latest group known as created group
-     */
     const createdGroup = store.getState().group.groups.at(-1);
-
-    /**
-     * Navigate to the next page
-     */
     router.push(`/groups/${createdGroup?.id}`);
   };
 
   return (
-    <Container maxWidth="lg">
+    <div className="container mx-auto px-4 py-6">
       <PageTitle
         heading="Create a Group"
         subHeading="You can create a group with your information."
       />
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader title={"Info"} />
-            <CardContent>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    id="group-name-textfield"
-                    value={name}
-                    onChangeText={handleOnChangeName}
-                    label="Name"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="group-curreny-select-label">
-                      {"Currency"}
-                    </InputLabel>
-                    <Select
-                      id="group-curreny-select"
-                      labelId="group-curreny-select-label"
-                      value={currency}
-                      onChange={handleOnChangeCurrency}
-                      label="Currency"
-                      fullWidth
-                    >
-                      {Currencies.data.map((item) => {
-                        return (
-                          <MenuItem key={item.code} value={item.code}>
-                            {item.code} ({item.name})
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader title={"Users"} />
-            <CardContent>
-              <SelectUsers ref={selectUsersRef} />
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-      <Box display={"flex"} mt={5}>
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ maxWidth: theme.breakpoints.values.sm / 2, m: "auto" }}
-          onClick={onClickSubmit}
-        >
-          {"Submit"}
+      <div className="grid gap-6">
+        <Card>
+          <CardHeader>
+            <h3 className="text-lg font-semibold">Info</h3>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <Input
+                  value={name}
+                  onChange={(e) => handleOnChangeName(e.target.value)}
+                  placeholder="Name"
+                />
+              </div>
+              <div>
+                <Select value={currency} onValueChange={handleOnChangeCurrency}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select currency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Currencies.data.map((item) => (
+                      <SelectItem key={item.code} value={item.code}>
+                        {item.code} ({item.name})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <h3 className="text-lg font-semibold">Users</h3>
+          </CardHeader>
+          <CardContent>
+            <SelectUsers ref={selectUsersRef} />
+          </CardContent>
+        </Card>
+      </div>
+      <div className="mt-8 flex justify-center">
+        <Button className="w-full max-w-sm" onClick={onClickSubmit}>
+          Submit
         </Button>
-      </Box>
-    </Container>
+      </div>
+    </div>
   );
 };
 

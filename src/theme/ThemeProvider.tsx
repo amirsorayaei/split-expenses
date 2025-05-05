@@ -1,32 +1,9 @@
-import React, { useState, createContext, useEffect } from "react";
-import { ThemeProvider } from "@mui/material";
-import { StylesProvider } from "@mui/styles";
-
-import { themeCreator } from "./base";
+import React, { createContext } from "react";
 
 export const ThemeContext = createContext((_themeName: string): void => {});
 
-const ThemeProviderWrapper = ({ children }: { children: React.ReactNode }) => {
-  const [themeName, _setThemeName] = useState("NavyTheme");
-
-  useEffect(() => {
-    const curThemeName = window.localStorage.getItem("appTheme") || "NavyTheme";
-    _setThemeName(curThemeName);
-  }, []);
-
-  const theme = themeCreator(themeName);
-  const setThemeName = (themeName: string): void => {
-    window.localStorage.setItem("appTheme", themeName);
-    _setThemeName(themeName);
-  };
-
-  return (
-    <StylesProvider injectFirst>
-      <ThemeContext.Provider value={setThemeName}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
-      </ThemeContext.Provider>
-    </StylesProvider>
-  );
+const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  return <div className="min-h-screen bg-background">{children}</div>;
 };
 
-export default ThemeProviderWrapper;
+export default ThemeProvider;

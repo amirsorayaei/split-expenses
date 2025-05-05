@@ -1,16 +1,21 @@
 import React from "react";
-import { TableCell, Typography } from "@mui/material";
+import { TableCell } from "@/components/ui/table";
+import CustomTable from "@/components/Table";
+import ActionButtons from "@/components/ActionButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
-import Table from "@/components/Table";
-import { Group } from "@/utils/resources/interfaces";
+import { Group, Expense } from "@/utils/resources/interfaces";
 import { RootState } from "@/redux/store";
-import ActionButtons from "@/components/ActionButtons";
 import { deleteGroup } from "@/redux/slices/groupSlice";
 import { getTotalAmountOfExpenses } from "@/utils/resources/Functions";
 
-const GroupsTable = () => {
+interface Props {
+  groupId?: number;
+  expenses?: Expense[];
+}
+
+const GroupsTable = ({ groupId, expenses }: Props) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -18,10 +23,18 @@ const GroupsTable = () => {
    * Clone groups list from redux
    */
   const groups = useSelector((state: RootState) => state.group.groups);
+  const selectedGroup = groupId ? groups.find((g) => g.id === groupId) : null;
 
   const onClickItem = (item: Group) => {
     router.push(`/groups/${item.id}`);
   };
+
+  const tableColumns = [
+    { text: "Name", align: "left" as const },
+    { text: "Members", align: "left" as const },
+    { text: "Total Expenses", align: "left" as const },
+    { text: "Actions", align: "right" as const },
+  ];
 
   const renderItem = (item: Group) => {
     const onDeleteGroup = () => {
@@ -30,28 +43,20 @@ const GroupsTable = () => {
 
     return (
       <>
-        <TableCell>
-          <Typography>{item.id}</Typography>
+        <TableCell key="name">{item.name}</TableCell>
+        <TableCell key="members">
+          {item.users?.length + " " + "people"}
         </TableCell>
-        <TableCell>
-          <Typography>{item.name}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.users?.length + " " + "people"}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{`${getTotalAmountOfExpenses(item.expenses)} ${
-            item.currency
-          }`}</Typography>
-        </TableCell>
-        <TableCell>
+        <TableCell key="total">{`${getTotalAmountOfExpenses(item.expenses)} ${
+          item.currency
+        }`}</TableCell>
+        <TableCell key="actions" className="text-right">
           <ActionButtons
+            onEdit={() => {}}
             onDelete={onDeleteGroup}
             dialogSettings={{
-              title: "Delete group?",
-              message: "Do you want to delete this group?",
-              confirmBtn: "Yes",
-              cancelBtn: "No",
+              title: "Delete Group",
+              message: "Are you sure you want to delete this group?",
             }}
           />
         </TableCell>
@@ -60,18 +65,13 @@ const GroupsTable = () => {
   };
 
   return (
-    <Table
-      data={groups}
+    <CustomTable
+      title={selectedGroup ? "Expenses" : "Groups"}
+      tableColumns={tableColumns}
+      data={selectedGroup ? [selectedGroup] : groups}
       renderItem={renderItem}
-      title={"Groups Table List"}
-      emptyMessage={"No groups found !"}
+      emptyMessage={selectedGroup ? "No expenses found" : "No groups found"}
       onClickItem={onClickItem}
-      tableColumns={[
-        { text: "ID" },
-        { text: "Name" },
-        { text: "Users count" },
-        { text: "Expense" },
-      ]}
     />
   );
 };

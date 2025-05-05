@@ -1,37 +1,26 @@
-import { FC, ReactNode } from "react";
+import React from "react";
 import { Scrollbars } from "react-custom-scrollbars-2";
 
-import { Box, useTheme } from "@mui/material";
-
-interface ScrollbarProps {
+interface Props {
+  children: React.ReactNode;
   className?: string;
-  children?: ReactNode;
 }
 
-const Scrollbar: FC<ScrollbarProps> = ({ className, children, ...rest }) => {
-  const theme = useTheme();
-
+const Scrollbar = ({ children, className }: Props) => {
   return (
     <Scrollbars
       autoHide
-      universal
-      renderThumbVertical={() => {
-        return (
-          <Box
-            sx={{
-              width: 5,
-              background: `${theme.colors.alpha.black[10]}`,
-              borderRadius: `${theme.general.borderRadiusLg}`,
-              transition: `${theme.transitions.create(["background"])}`,
-
-              "&:hover": {
-                background: `${theme.colors.alpha.black[30]}`,
-              },
-            }}
-          />
-        );
-      }}
-      {...rest}
+      renderThumbVertical={({ style, ...props }) => (
+        <div
+          {...props}
+          style={{
+            ...style,
+            backgroundColor: "hsl(var(--muted-foreground))",
+            borderRadius: "4px",
+          }}
+        />
+      )}
+      className={className}
     >
       {children}
     </Scrollbars>

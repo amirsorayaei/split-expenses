@@ -1,41 +1,34 @@
+import React from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { Container } from "@mui/material";
-
 import PageTitle from "@/components/PageTitle";
 import { RootState } from "@/redux/store";
-import EmptyContent from "@/components/EmptyContent";
-import Expenses from "@/content/Expenses";
+import GroupsTable from "../GroupsTable";
+import { Button } from "@/components/ui/button";
 
-interface Props {
-  id: number;
-}
-
-const GroupDetails = ({ id }: Props) => {
+const GroupDetails = () => {
   const router = useRouter();
-
-  const group = useSelector((state: RootState) =>
-    state.group.groups.find((item) => item.id === id)
+  const { id } = router.query;
+  const selectedGroup = useSelector((state: RootState) =>
+    state.group.groups.find((item) => item.id === +id!)
   );
 
-  const onClickCreatNewExpense = () => {
-    router.push(`/groups/${id}/create-expense`);
-  };
-
-  if (!group) {
-    return <EmptyContent message={"No group found!"} />;
-  }
-
   return (
-    <Container maxWidth="lg">
+    <div className="container mx-auto px-4 py-6">
       <PageTitle
-        heading={`Group Details - ${group?.name}`}
-        subHeading={"See group details below and create new expenses."}
-        buttonTitle={"Create new expense"}
-        onClickButton={onClickCreatNewExpense}
+        heading="Group Details"
+        subHeading="You can see group details and expenses."
       />
-      <Expenses group={group} />
-    </Container>
+      <div className="mb-4">
+        <Button onClick={() => router.back()}>Back</Button>
+      </div>
+      {selectedGroup && (
+        <GroupsTable
+          groupId={selectedGroup.id}
+          expenses={selectedGroup.expenses}
+        />
+      )}
+    </div>
   );
 };
 
