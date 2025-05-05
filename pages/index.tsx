@@ -98,7 +98,7 @@ export default function LandingPage() {
                 <Card className="w-full max-w-[500px] overflow-hidden">
                   <div className="relative aspect-video">
                     <Image
-                      src="/images/hero.jpeg"
+                      src="/images/hero.webp"
                       width={500}
                       height={300}
                       alt="Split Expenses Dashboard"
