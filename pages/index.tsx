@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
 
+import heroImage from "@/public/images/hero.webp";
+
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -98,12 +100,11 @@ export default function LandingPage() {
                 <Card className="w-full max-w-[500px] overflow-hidden">
                   <div className="relative aspect-video">
                     <Image
-                      src="/images/hero.webp"
-                      width={500}
-                      height={300}
+                      src={heroImage}
                       alt="Split Expenses Dashboard"
                       className="object-cover rounded-lg shadow-lg"
                       priority // Add this to prioritize loading this image
+                      placeholder="blur"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-background/20 flex items-end p-6">
                       <div className="space-y-2 text-white">
