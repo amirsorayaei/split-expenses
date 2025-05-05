@@ -1,75 +1,50 @@
-import React, { useState, forwardRef, useImperativeHandle } from "react";
-import { Grid, Button, Chip, Typography } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
+import { User } from "@/src/utils/resources/interfaces";
 
-import { User } from "@/utils/resources/interfaces";
-import { generateUniqueID } from "@/utils/resources/Functions";
-import TextField from "@/components/TextField/TextField";
+export interface SelectUsersRef {
+  getUsers(): User[];
+}
 
-const SelectUsers = forwardRef((_props, ref) => {
-  const [username, setUsername] = useState<string>("");
-  const [users, setUsers] = useState<User[]>([]);
+interface Props {
+  users?: User[];
+}
+
+const SelectUsers = forwardRef<SelectUsersRef, Props>(({ users = [] }, ref) => {
+  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
   useImperativeHandle(ref, () => ({
-    getUsers() {
-      return users as User[];
-    },
+    getUsers: () => selectedUsers,
   }));
 
-  const handleOnChangeUser = (value: string) => {
-    setUsername(value);
-  };
-
-  const addUser = () => {
-    /**
-     * Adding users is allowed when the input is filled
-     */
-    if (username.length > 0) {
-      setUsername("");
-      setUsers((previousUsers) => [
-        ...previousUsers,
-        { id: generateUniqueID(users), name: username },
-      ]);
-    }
-  };
-
-  const onDeleteUser = (index: number) => {
-    const filteredUsers = users.filter((el, i) => i !== index);
-    setUsers(filteredUsers);
+  const onSelectUser = (user: User) => {
+    setSelectedUsers((prev) => {
+      if (prev.includes(user)) {
+        return prev.filter((u) => u.id !== user.id);
+      }
+      return [...prev, user];
+    });
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <TextField
-          id="user-name-textfield"
-          value={username}
-          onChangeText={handleOnChangeUser}
-          label={"User Name"}
-          handleSubmit={addUser}
-          fullWidth
-          helperText={
-            <Typography variant="caption">
-              {"Type user name and press Enter to add user."}
-            </Typography>
-          }
-          InputProps={{
-            endAdornment: (
-              <Button variant="text" color="secondary" onClick={addUser}>
-                <CheckIcon />
-              </Button>
-            ),
-          }}
-        />
-        <Grid container pt={2} spacing={1}>
-          {users.map((item, index) => (
-            <Grid key={index} item>
-              <Chip label={item.name} onDelete={() => onDeleteUser(index)} />
-            </Grid>
-          ))}
-        </Grid>
-      </Grid>
-    </Grid>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+        {users.map((user) => (
+          <Button
+            key={user.id}
+            variant={selectedUsers.includes(user) ? "default" : "outline"}
+            className="h-auto flex-col items-start p-4"
+            onClick={() => onSelectUser(user)}
+          >
+            <div className="flex w-full items-center justify-between">
+              <span>{user.name}</span>
+              {selectedUsers.includes(user) && <Check className="h-4 w-4" />}
+            </div>
+          </Button>
+        ))}
+      </div>
+    </div>
   );
 });
 

@@ -1,27 +1,18 @@
 import React from "react";
-import { Container } from "@mui/material";
-import { useRouter } from "next/router";
-
-import PageTitle from "@/components/PageTitle";
+import PageTitle from "@/src/components/PageTitle";
 import GroupsTable from "./GroupsTable";
 
 const Groups = () => {
-  const router = useRouter();
-
-  const onClickCreatNewGroup = () => {
-    router.push("/groups/create");
-  };
-
   return (
-    <Container maxWidth="lg">
+    <div className="container mx-auto px-4 py-6">
       <PageTitle
-        heading={"Groups"}
-        subHeading={"You can manage all of your expenses here."}
-        buttonTitle={"Create new group"}
-        onClickButton={onClickCreatNewGroup}
+        heading="Groups"
+        subHeading="Manage your expense groups"
+        buttonTitle="Create Group"
+        onClickButton={() => {}}
       />
       <GroupsTable />
-    </Container>
+    </div>
   );
 };
 

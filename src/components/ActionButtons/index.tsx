@@ -1,6 +1,11 @@
-import { IconButton, Tooltip, useTheme } from "@mui/material";
-import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
-import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Pencil, Trash2 } from "lucide-react";
 
 import DialogAlert, { DialogProps } from "../DialogAlert";
 
@@ -17,9 +22,7 @@ const ActionButtons = ({
   disableHoverListener = false,
   dialogSettings,
 }: Props) => {
-  const theme = useTheme();
-
-  const onClickDelete = (e: any) => {
+  const onClickDelete = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent onClick in the parent
 
     DialogAlert.showDialog({
@@ -32,56 +35,51 @@ const ActionButtons = ({
     });
   };
 
-  const onClickEdit = (e: any) => {
+  const onClickEdit = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent onClick in the parent
     onEdit?.();
   };
 
   return (
-    <>
-      {!!onEdit && (
-        <Tooltip
-          data-testid="Edit"
-          disableHoverListener={disableHoverListener}
-          title="Edit"
-          arrow
-          onClick={onClickEdit}
-        >
-          <IconButton
-            sx={{
-              "&:hover": {
-                background: theme.colors.primary.lighter,
-              },
-              color: theme.palette.primary.main,
-            }}
-            color="inherit"
-            size="small"
-          >
-            <EditTwoToneIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      )}
-      {!!onDelete && (
-        <Tooltip
-          data-testid="Delete"
-          disableHoverListener={disableHoverListener}
-          title="Delete"
-          arrow
-          onClick={onClickDelete}
-        >
-          <IconButton
-            sx={{
-              "&:hover": { background: theme.colors.error.lighter },
-              color: theme.palette.error.main,
-            }}
-            color="inherit"
-            size="small"
-          >
-            <DeleteTwoToneIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      )}
-    </>
+    <TooltipProvider>
+      <div className="flex items-center space-x-2">
+        {!!onEdit && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onClickEdit}
+                data-testid="Edit"
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Edit</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
+        {!!onDelete && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onClickDelete}
+                data-testid="Delete"
+                className="text-destructive hover:text-destructive"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
+      </div>
+    </TooltipProvider>
   );
 };
 

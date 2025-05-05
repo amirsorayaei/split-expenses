@@ -4,11 +4,10 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { Grid, Typography, Button } from "@mui/material";
-
-import { User } from "@/utils/resources/interfaces";
-import Snack from "@/components/Snack/Snack";
-import TextField from "@/components/TextField/TextField";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { User } from "@/src/utils/resources/interfaces";
+import Snack from "@/src/components/Snack/Snack";
 
 interface Props {
   users: User[];
@@ -49,8 +48,8 @@ const UsersShare = ({ users, amount, submit, currency }: Props) => {
   };
 
   return (
-    <>
-      <Grid container spacing={2}>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {users.map((user, index) => {
           const share = user.share?.toString()
             ? user.share
@@ -67,11 +66,11 @@ const UsersShare = ({ users, amount, submit, currency }: Props) => {
             />
           );
         })}
-      </Grid>
-      <Button onClick={onClickSubmit} sx={{ mt: 2 }} variant={"contained"}>
-        {"Submit"}
-      </Button>
-    </>
+      </div>
+      <div className="flex justify-end">
+        <Button onClick={onClickSubmit}>Submit</Button>
+      </div>
+    </div>
   );
 };
 
@@ -94,20 +93,17 @@ const UserItem = forwardRef(
     };
 
     return (
-      <Grid key={index} item xs={12} sm={6}>
-        <TextField
-          id={`user-share-${index}-textfield`}
+      <div className="flex items-center space-x-2">
+        <span className="min-w-[100px]">{user.name}</span>
+        <Input
+          type="number"
           value={share}
-          onChangeText={handleOnChangeShare}
-          label="Share"
-          fullWidth
-          inputMode="numeric"
-          InputProps={{
-            startAdornment: <Typography mr={1.5}>{user.name}</Typography>,
-            endAdornment: <Typography ml={1.5}>{currency}</Typography>,
-          }}
+          onChange={(e) => handleOnChangeShare(e.target.value)}
+          placeholder="Enter share amount"
+          className="flex-1"
         />
-      </Grid>
+        {currency && <span className="ml-2">{currency}</span>}
+      </div>
     );
   }
 );

@@ -1,16 +1,13 @@
 import { FC, ReactNode } from "react";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import {
-  Card,
-  CardHeader,
-  Box,
-  useTheme,
-  TableContainer,
-  Table as MaterialTable,
-  TableHead,
-  TableRow,
-  TableCell,
+  Table,
   TableBody,
-} from "@mui/material";
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 import SearchBox from "../SearchBox";
 import EmptyContent from "../EmptyContent";
@@ -30,7 +27,7 @@ interface TableProps {
   onClickItem?(item: unknown, index: number): void;
 }
 
-const Table: FC<TableProps> = ({
+const CustomTable: FC<TableProps> = ({
   data,
   renderItem,
   tableColumns,
@@ -41,56 +38,47 @@ const Table: FC<TableProps> = ({
   emptyMessage,
   onClickItem,
 }) => {
-  const theme = useTheme();
-
   const onSearch = () => {};
 
   return (
     <Card>
-      <CardHeader
-        title={title}
-        titleTypographyProps={{ variant: "h3" }}
-        action={action}
-      />
+      <CardHeader className="flex flex-row items-center justify-between">
+        <h3 className="text-2xl font-semibold">{title}</h3>
+        {action}
+      </CardHeader>
       {searchable && (
-        <Box paddingY={2} paddingX={1}>
+        <div className="px-6 py-4">
           <SearchBox onSearch={onSearch} placeholder={searchPlaceholder} />
-        </Box>
+        </div>
       )}
       {Array.isArray(data) && data.length > 0 ? (
-        <TableContainer>
-          <MaterialTable>
-            <TableHead>
+        <CardContent>
+          <Table>
+            <TableHeader>
               <TableRow>
-                {tableColumns.map((item, index) => {
-                  return (
-                    <TableCell
-                      sx={{ color: theme.palette.text.secondary }}
-                      align={item.align || "left"}
-                      key={index}
-                    >
-                      {item.text}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((item: unknown, index: number) => {
-                return (
-                  <TableRow
-                    hover
+                {tableColumns.map((item, index) => (
+                  <TableHead
                     key={index}
-                    sx={{ cursor: "pointer" }}
-                    onClick={() => onClickItem?.(item, index)}
+                    className={item.align ? `text-${item.align}` : ""}
                   >
-                    {renderItem(item, index)}
-                  </TableRow>
-                );
-              })}
+                    {item.text}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data.map((item: unknown, index: number) => (
+                <TableRow
+                  key={index}
+                  className="cursor-pointer hover:bg-muted/50"
+                  onClick={() => onClickItem?.(item, index)}
+                >
+                  {renderItem(item, index)}
+                </TableRow>
+              ))}
             </TableBody>
-          </MaterialTable>
-        </TableContainer>
+          </Table>
+        </CardContent>
       ) : (
         <EmptyContent message={emptyMessage} />
       )}
@@ -98,4 +86,4 @@ const Table: FC<TableProps> = ({
   );
 };
 
-export default Table;
+export default CustomTable;
