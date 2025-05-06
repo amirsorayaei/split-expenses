@@ -4,25 +4,27 @@ import { useSelector } from "react-redux";
 import PageTitle from "@/src/components/PageTitle";
 import { RootState } from "@/src/redux/store";
 import GroupsTable from "../GroupsTable";
-import { Button } from "@/components/ui/button";
 
 const GroupDetails = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { groupId } = router.query;
 
   const selectedGroup = useSelector((state: RootState) =>
-    state.group.groups.find((item) => item.id === +id!)
+    state.group.groups.find((item) => item.id === +groupId!)
   );
+
+  const onClickEditGroup = () => {
+    router.push(`/groups/${groupId}/edit`);
+  };
 
   return (
     <div className="container mx-auto px-4 py-6">
       <PageTitle
         heading="Group Details"
         subHeading="You can see group details and expenses."
+        buttonTitle="Edit Group"
+        onClickButton={onClickEditGroup}
       />
-      <div className="mb-4">
-        <Button onClick={() => router.back()}>Back</Button>
-      </div>
       {selectedGroup && (
         <GroupsTable
           groupId={selectedGroup.id}

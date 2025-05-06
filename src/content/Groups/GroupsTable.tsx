@@ -9,6 +9,7 @@ import { Group, Expense } from "@/src/utils/resources/interfaces";
 import { RootState } from "@/src/redux/store";
 import { deleteGroup } from "@/src/redux/slices/groupSlice";
 import { getTotalAmountOfExpenses } from "@/src/utils/resources/Functions";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   groupId?: number;
@@ -26,14 +27,18 @@ const GroupsTable = ({ groupId, expenses }: Props) => {
   const selectedGroup = groupId ? groups.find((g) => g.id === groupId) : null;
 
   const onClickItem = (item: Group) => {
-    router.push(`/groups/${item.id}`);
+    router.push(`/groups/${item.id}/`);
+  };
+
+  const handleOnCreateExpense = () => {
+    router.push(`/groups/${groupId}/create-expense`);
   };
 
   const tableColumns = [
     { text: "Name", align: "left" as const },
     { text: "Members", align: "left" as const },
     { text: "Total Expenses", align: "left" as const },
-    { text: "Actions", align: "right" as const },
+    { text: "Actions", align: "left" as const },
   ];
 
   const renderItem = (item: Group) => {
@@ -50,7 +55,7 @@ const GroupsTable = ({ groupId, expenses }: Props) => {
         <TableCell key="total">{`${getTotalAmountOfExpenses(item.expenses)} ${
           item.currency
         }`}</TableCell>
-        <TableCell key="actions" className="text-right">
+        <TableCell key="actions" className="text-left">
           <ActionButtons
             onEdit={() => {}}
             onDelete={onDeleteGroup}
@@ -72,6 +77,7 @@ const GroupsTable = ({ groupId, expenses }: Props) => {
       renderItem={renderItem}
       emptyMessage={selectedGroup ? "No expenses found" : "No groups found"}
       onClickItem={onClickItem}
+      action={<Button onClick={handleOnCreateExpense}>Create Expense</Button>}
     />
   );
 };
