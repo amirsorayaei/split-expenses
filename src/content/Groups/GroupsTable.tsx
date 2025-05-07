@@ -9,8 +9,8 @@ import { RootState } from "@/src/redux/store";
 import { deleteGroup } from "@/src/redux/slices/groupSlice";
 import { getTotalAmountOfExpenses } from "@/src/utils/resources/Functions";
 import { Button } from "@/components/ui/button";
-import { clientEnvironment } from "@/src/config/environments/client.environment.config";
 import { Routes } from "@/src/core/routes";
+import { API_URL } from "@/src/core/constants";
 
 const GroupsTable = () => {
   const router = useRouter();
@@ -37,7 +37,7 @@ const GroupsTable = () => {
   };
 
   const onCreateGroup = () => {
-    router.push(clientEnvironment.NEXT_PUBLIC_BASE_URL + Routes.createGroup());
+    router.push(API_URL + Routes.createGroup());
   };
 
   const renderItem = (item: Group) => {

@@ -22,8 +22,8 @@ import {
 import { Input } from "@/components/ui/input";
 
 import heroImage from "@/public/images/hero.webp";
-import { clientEnvironment } from "@/src/config/environments/client.environment.config";
 import { Routes } from "@/src/core/routes";
+import { API_URL } from "@/src/core/constants";
 
 export default function LandingPage() {
   return (
@@ -64,13 +64,7 @@ export default function LandingPage() {
           </nav>
           <div className="flex items-center gap-4">
             <Button asChild>
-              <Link
-                href={`${
-                  clientEnvironment.NEXT_PUBLIC_BASE_URL
-                }${Routes.groups()}`}
-              >
-                Get Started
-              </Link>
+              <Link href={`${API_URL}${Routes.groups()}`}>Get Started</Link>
             </Button>
           </div>
         </div>
@@ -93,11 +87,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button asChild>
-                    <Link
-                      href={`${
-                        clientEnvironment.NEXT_PUBLIC_BASE_URL
-                      }${Routes.groups()}`}
-                    >
+                    <Link href={`${API_URL}${Routes.groups()}`}>
                       Try It Now
                     </Link>
                   </Button>
@@ -280,11 +270,7 @@ export default function LandingPage() {
                 </p>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button asChild>
-                    <Link
-                      href={`${
-                        clientEnvironment.NEXT_PUBLIC_BASE_URL
-                      }${Routes.groups()}`}
-                    >
+                    <Link href={`${API_URL}${Routes.groups()}`}>
                       Get Started <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
@@ -411,11 +397,7 @@ export default function LandingPage() {
               </div>
               <div className="mx-auto w-full max-w-sm space-y-2">
                 <Button size="lg" variant="secondary" asChild>
-                  <Link
-                    href={`${
-                      clientEnvironment.NEXT_PUBLIC_BASE_URL
-                    }${Routes.groups()}`}
-                  >
+                  <Link href={`${API_URL}${Routes.groups()}`}>
                     Get Started Now
                   </Link>
                 </Button>
