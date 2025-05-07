@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import PageTitle from "@/src/components/PageTitle";
 import { RootState } from "@/src/redux/store";
-import GroupsTable from "../GroupsTable";
+import Expenses from "../../Expenses";
 
 const GroupDetails = () => {
   const router = useRouter();
@@ -13,8 +13,8 @@ const GroupDetails = () => {
     state.group.groups.find((item) => item.id === +groupId!)
   );
 
-  const onClickEditGroup = () => {
-    router.push(`/groups/${groupId}/edit`);
+  const onClickBack = () => {
+    router.back();
   };
 
   return (
@@ -22,15 +22,10 @@ const GroupDetails = () => {
       <PageTitle
         heading="Group Details"
         subHeading="You can see group details and expenses."
-        buttonTitle="Edit Group"
-        onClickButton={onClickEditGroup}
+        buttonTitle="Back"
+        onClickButton={onClickBack}
       />
-      {selectedGroup && (
-        <GroupsTable
-          groupId={selectedGroup.id}
-          expenses={selectedGroup.expenses}
-        />
-      )}
+      {selectedGroup && <Expenses group={selectedGroup} />}
     </div>
   );
 };

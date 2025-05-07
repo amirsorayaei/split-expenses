@@ -3,6 +3,7 @@ import React, {
   useRef,
   forwardRef,
   useImperativeHandle,
+  useEffect,
 } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,14 +22,27 @@ interface UserItemProps {
   index: number;
   userShare: number;
   currency?: string;
+  onShareChange?: (share: number) => void;
 }
 
 interface UserItemRef {
   getUserShare(): User;
+  setShare(share: number): void;
 }
 
 const UsersShare = ({ users, amount, submit, currency }: Props) => {
   const usersShare = useRef<UserItemRef[]>([]);
+
+  // Recalculate shares when amount changes
+  useEffect(() => {
+    const equalShare = amount / users.length;
+    usersShare.current.forEach((ref) => {
+      if (ref) {
+        const newShare = equalShare;
+        ref.setShare(newShare);
+      }
+    });
+  }, [amount, users]);
 
   const onClickSubmit = () => {
     const usersWithShare: User[] = usersShare.current.map((item) =>
@@ -51,32 +65,38 @@ const UsersShare = ({ users, amount, submit, currency }: Props) => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {users.map((user, index) => {
-          const share = user.share?.toString()
-            ? user.share
-            : amount / users.length;
+          const initialShare = user.share || amount / users.length;
 
           return (
             <UserItem
-              ref={(ref: UserItemRef) => (usersShare.current[index] = ref)}
+              ref={(ref: UserItemRef) => {
+                usersShare.current[index] = ref;
+              }}
               key={user.id}
               user={user}
               index={index}
-              userShare={share}
+              userShare={initialShare}
               currency={currency}
             />
           );
         })}
       </div>
-      <div className="flex justify-end">
-        <Button onClick={onClickSubmit}>Submit</Button>
+      <div className="flex justify-center pt-4">
+        <Button className="w-full max-w-sm" onClick={onClickSubmit}>
+          Submit
+        </Button>
       </div>
     </div>
   );
 };
 
 const UserItem = forwardRef(
-  ({ user, userShare, index, currency }: UserItemProps, ref) => {
-    const [share, setShare] = useState<string>(userShare.toString());
+  ({ user, userShare, currency }: UserItemProps, ref) => {
+    const [share, setShare] = useState<string>("");
+
+    useEffect(() => {
+      setShare(userShare?.toString());
+    }, [userShare]);
 
     useImperativeHandle(ref, () => ({
       getUserShare() {
@@ -85,6 +105,9 @@ const UserItem = forwardRef(
           share: +share,
         };
         return users;
+      },
+      setShare(newShare: number) {
+        setShare(newShare.toString());
       },
     }));
 
