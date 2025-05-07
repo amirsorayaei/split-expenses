@@ -37,14 +37,18 @@ export const groupSlice = createSlice({
       const givenGroupIndex = state.groups.findIndex(
         (el) => el.id === payload.id
       );
+
       /**
        * Means that item exists
        */
       if (givenGroupIndex !== -1) {
         /**
-         * Update given group details
+         * Update given group details while preserving existing expenses
          */
-        state.groups[givenGroupIndex] = payload;
+        state.groups[givenGroupIndex] = {
+          ...payload,
+          expenses: state.groups[givenGroupIndex].expenses || [],
+        };
       }
     },
     deleteGroup: (state, param) => {

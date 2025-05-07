@@ -1,21 +1,18 @@
-import React from "react";
 import { TableCell } from "@/components/ui/table";
 import CustomTable from "@/src/components/Table";
 import ActionButtons from "@/src/components/ActionButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
-import { Group, Expense } from "@/src/utils/resources/interfaces";
+import { Group } from "@/src/utils/resources/interfaces";
 import { RootState } from "@/src/redux/store";
 import { deleteGroup } from "@/src/redux/slices/groupSlice";
 import { getTotalAmountOfExpenses } from "@/src/utils/resources/Functions";
+import { Button } from "@/components/ui/button";
+import { clientEnvironment } from "@/src/config/environments/client.environment.config";
+import { Routes } from "@/src/core/routes";
 
-interface Props {
-  groupId?: number;
-  expenses?: Expense[];
-}
-
-const GroupsTable = ({ groupId, expenses }: Props) => {
+const GroupsTable = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -23,18 +20,25 @@ const GroupsTable = ({ groupId, expenses }: Props) => {
    * Clone groups list from redux
    */
   const groups = useSelector((state: RootState) => state.group.groups);
-  const selectedGroup = groupId ? groups.find((g) => g.id === groupId) : null;
 
   const onClickItem = (item: Group) => {
-    router.push(`/groups/${item.id}`);
+    router.push(`/groups/${item.id}/`);
   };
 
   const tableColumns = [
     { text: "Name", align: "left" as const },
     { text: "Members", align: "left" as const },
     { text: "Total Expenses", align: "left" as const },
-    { text: "Actions", align: "right" as const },
+    { text: "Actions", align: "left" as const },
   ];
+
+  const onEditGroup = (groupId: number) => {
+    router.push(`/groups/${groupId}/edit`);
+  };
+
+  const onCreateGroup = () => {
+    router.push(clientEnvironment.NEXT_PUBLIC_BASE_URL + Routes.createGroup());
+  };
 
   const renderItem = (item: Group) => {
     const onDeleteGroup = () => {
@@ -50,9 +54,9 @@ const GroupsTable = ({ groupId, expenses }: Props) => {
         <TableCell key="total">{`${getTotalAmountOfExpenses(item.expenses)} ${
           item.currency
         }`}</TableCell>
-        <TableCell key="actions" className="text-right">
+        <TableCell key="actions" className="text-left">
           <ActionButtons
-            onEdit={() => {}}
+            onEdit={() => onEditGroup(item.id!)}
             onDelete={onDeleteGroup}
             dialogSettings={{
               title: "Delete Group",
@@ -66,12 +70,13 @@ const GroupsTable = ({ groupId, expenses }: Props) => {
 
   return (
     <CustomTable
-      title={selectedGroup ? "Expenses" : "Groups"}
+      title={"Groups"}
       tableColumns={tableColumns}
-      data={selectedGroup ? [selectedGroup] : groups}
+      data={groups}
       renderItem={renderItem}
-      emptyMessage={selectedGroup ? "No expenses found" : "No groups found"}
+      emptyMessage={"No groups found"}
       onClickItem={onClickItem}
+      action={<Button onClick={onCreateGroup}>Create Group</Button>}
     />
   );
 };

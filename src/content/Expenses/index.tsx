@@ -11,6 +11,8 @@ import {
   getTotalAmountOfExpenses,
   numberFormat,
 } from "@/src/utils/resources/Functions";
+import { Button } from "@/components/ui/button";
+import { TableCell } from "@/components/ui/table";
 
 interface Props {
   group: Group;
@@ -120,21 +122,29 @@ const Expenses = ({ group }: Props) => {
     return usersText;
   };
 
+  const handleOnCreateExpense = () => {
+    router.push(`/groups/${group.id}/create-expense`);
+  };
+
+  const onClickEditGroup = () => {
+    router.push(`/groups/${group.id}/edit`);
+  };
+
   const renderItem = (item: Expense) => {
     const onDeleteExpense = () => {
       dispatch(deleteExpense({ groupId: group.id, expenseId: item.id }));
     };
 
     return [
-      <div key="id">{item.id}</div>,
-      <div key="name">{item.name}</div>,
-      <div key="users">{item.users?.length + " people"}</div>,
-      <div key="payor">{item.payor.name}</div>,
-      <div key="amount">{`${numberFormat(item.amount)} ${
+      <TableCell key="id">{item.id}</TableCell>,
+      <TableCell key="name">{item.name}</TableCell>,
+      <TableCell key="users">{item.users?.length + " people"}</TableCell>,
+      <TableCell key="payor">{item.payor.name}</TableCell>,
+      <TableCell key="amount">{`${numberFormat(item.amount)} ${
         group.currency
-      }`}</div>,
-      <div key="created">{item.createdAt}</div>,
-      <div key="actions">
+      }`}</TableCell>,
+      <TableCell key="created">{item.createdAt}</TableCell>,
+      <TableCell key="actions">
         <ActionButtons
           onDelete={onDeleteExpense}
           dialogSettings={{
@@ -142,7 +152,7 @@ const Expenses = ({ group }: Props) => {
             message: "Do you want to delete this expense?",
           }}
         />
-      </div>,
+      </TableCell>,
     ];
   };
 
@@ -160,6 +170,14 @@ const Expenses = ({ group }: Props) => {
         title="Expenses Table List"
         emptyMessage="No expenses found!"
         onClickItem={onClickItem}
+        action={
+          <div className="flex items-center gap-2">
+            <Button variant="secondary" onClick={onClickEditGroup}>
+              Edit Group
+            </Button>
+            <Button onClick={handleOnCreateExpense}>Create Expense</Button>
+          </div>
+        }
         tableColumns={[
           { text: "ID", align: "left" as const },
           { text: "Name", align: "left" as const },
@@ -178,12 +196,12 @@ const Expenses = ({ group }: Props) => {
             </div>
           ))}
         </div>
-        <button
+        <Button
           className="rounded-md bg-secondary px-4 py-2 text-secondary-foreground hover:bg-secondary/80"
           onClick={minimizeTransactions}
         >
           Calculate
-        </button>
+        </Button>
       </div>
     </div>
   );

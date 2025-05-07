@@ -1,10 +1,10 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
 import PageTitle from "@/src/components/PageTitle";
 import SelectUsers from "./SelectUsers";
-import { createGroup } from "@/src/redux/slices/groupSlice";
+import { createGroup, updateGroup } from "@/src/redux/slices/groupSlice";
 import { Group, User } from "@/src/utils/resources/interfaces";
 import { store } from "@/src/redux/store";
 import { Input } from "@/components/ui/input";
@@ -21,9 +21,14 @@ import Currencies from "@/src/core/db/Currencies.json";
 
 interface SelectUsersRef {
   getUsers(): User[];
+  setUsers(users: User[]): void;
 }
 
-const CreateGroup = () => {
+interface Props {
+  type: "create" | "edit";
+}
+
+const GroupForm = ({ type }: Props) => {
   const [name, setName] = useState<string>("");
   const [currency, setCurrency] = useState<string>("");
 
@@ -31,6 +36,21 @@ const CreateGroup = () => {
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const { groupId } = router.query;
+
+  useEffect(() => {
+    if (type === "edit") {
+      const selectedGroup = store
+        .getState()
+        .group.groups.find((item) => item.id === +groupId!);
+
+      if (selectedGroup) {
+        setName(selectedGroup.name);
+        setCurrency(selectedGroup.currency);
+        selectUsersRef.current?.setUsers(selectedGroup.users);
+      }
+    }
+  }, []);
 
   const handleOnChangeName = (value: string) => {
     setName(value);
@@ -42,11 +62,17 @@ const CreateGroup = () => {
 
   const onClickSubmit = () => {
     const group: Group = {
+      id: groupId ? +groupId : undefined,
       name,
       currency,
       users: selectUsersRef.current?.getUsers() || [],
     };
-    dispatch(createGroup(group));
+
+    if (type === "create") {
+      dispatch(createGroup(group));
+    } else {
+      dispatch(updateGroup(group));
+    }
 
     const createdGroup = store.getState().group.groups.at(-1);
     router.push(`/groups/${createdGroup?.id}`);
@@ -55,8 +81,12 @@ const CreateGroup = () => {
   return (
     <div className="container mx-auto px-4 py-6">
       <PageTitle
-        heading="Create a Group"
-        subHeading="You can create a group with your information."
+        heading={type === "create" ? "Create a Group" : "Edit Group"}
+        subHeading={
+          type === "create"
+            ? "You can create a group with your information."
+            : "You can edit group information."
+        }
       />
       <div className="grid gap-6">
         <Card>
@@ -107,4 +137,4 @@ const CreateGroup = () => {
   );
 };
 
-export default CreateGroup;
+export default GroupForm;

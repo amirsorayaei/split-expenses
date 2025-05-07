@@ -1,15 +1,15 @@
 import GroupForm from "@/src/content/Groups/Form";
 import Head from "next/head";
 
-const CreateGroupPage = () => {
+const EditGroupPage = () => {
   return (
     <>
       <Head>
-        <title>{"Create Group"}</title>
+        <title>{"Edit Group"}</title>
       </Head>
-      <GroupForm type="create" />
+      <GroupForm type="edit" />
     </>
   );
 };
 
-export default CreateGroupPage;
+export default EditGroupPage;

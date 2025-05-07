@@ -5,12 +5,7 @@ import GroupsTable from "./GroupsTable";
 const Groups = () => {
   return (
     <div className="container mx-auto px-4 py-6">
-      <PageTitle
-        heading="Groups"
-        subHeading="Manage your expense groups"
-        buttonTitle="Create Group"
-        onClickButton={() => {}}
-      />
+      <PageTitle heading="Groups" subHeading="Manage your expense groups" />
       <GroupsTable />
     </div>
   );

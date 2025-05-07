@@ -19,6 +19,8 @@ import {
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { toast } from "@/hooks/use-toast";
+import Snack from "@/src/components/Snack/Snack";
 
 interface Props {
   groupId: number;
@@ -70,6 +72,26 @@ const CreateExpense = ({ groupId, expenseId }: Props) => {
   };
 
   const toggleDetailsSubmission = () => {
+    if (name === "") {
+      Snack.info("Please enter a name");
+      return;
+    }
+
+    if (amount === "") {
+      Snack.info("Please enter an amount");
+      return;
+    }
+
+    if (payorUserId === "") {
+      Snack.info("Please select a payor");
+      return;
+    }
+
+    if (users?.length === 0) {
+      Snack.info("Please select at least one user");
+      return;
+    }
+
     setDetailsSubmitted(!detailsSubmitted);
   };
 
@@ -91,8 +113,12 @@ const CreateExpense = ({ groupId, expenseId }: Props) => {
         dispatch(createExpense({ groupId, expense }));
       }
 
-      router.back();
+      handleOnBack();
     }
+  };
+
+  const handleOnBack = () => {
+    router.back();
   };
 
   return (
@@ -100,6 +126,8 @@ const CreateExpense = ({ groupId, expenseId }: Props) => {
       <PageTitle
         heading="Create Expense"
         subHeading="You can create a expense with your information."
+        buttonTitle="Back"
+        onClickButton={handleOnBack}
       />
       <div className="grid gap-6">
         <Card>
@@ -148,36 +176,44 @@ const CreateExpense = ({ groupId, expenseId }: Props) => {
               </div>
               <div className="sm:col-span-2 md:col-span-3">
                 <div className="space-y-4">
-                  <Label>Select Users</Label>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-                    {selectedGroup?.users.map((user) => (
-                      <div
-                        key={user.id}
-                        className="flex items-center space-x-2"
-                      >
-                        <Checkbox
-                          id={`user-${user.id}`}
-                          checked={users.some((u) => u.id === user.id)}
-                          onCheckedChange={(checked) =>
-                            handleUserSelection(user, checked as boolean)
-                          }
-                          disabled={detailsSubmitted}
-                        />
-                        <Label
-                          htmlFor={`user-${user.id}`}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  <Label className="text-lg font-semibold">Select Users</Label>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    {selectedGroup?.users.map((user) => {
+                      const checked = users.some((u) => u.id === user.id);
+
+                      return (
+                        <Button
+                          key={user.id}
+                          className="flex items-center justify-start space-x-2"
+                          onClick={() => handleUserSelection(user, !checked)}
+                          variant={checked ? "secondary" : "outline"}
                         >
-                          {user.name}
-                        </Label>
-                      </div>
-                    ))}
+                          <Checkbox
+                            id={`user-${user.id}`}
+                            checked={checked}
+                            disabled={detailsSubmitted}
+                          />
+                          <Label
+                            htmlFor={`user-${user.id}`}
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            {user.name}
+                          </Label>
+                        </Button>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
             </div>
             {!detailsSubmitted && (
-              <div className="mt-4">
-                <Button onClick={toggleDetailsSubmission}>Submit</Button>
+              <div className="pt-10 flex justify-center">
+                <Button
+                  className="w-full max-w-sm"
+                  onClick={toggleDetailsSubmission}
+                >
+                  Submit
+                </Button>
               </div>
             )}
           </CardContent>

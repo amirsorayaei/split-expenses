@@ -15,11 +15,13 @@ const PageTitle: FC<PageTitleProps> = ({
   onClickButton,
 }) => {
   return (
-    <div className="mb-6 flex flex-col gap-2">
-      {heading && (
-        <h1 className="text-3xl font-bold tracking-tight">{heading}</h1>
-      )}
-      {subHeading && <p className="text-muted-foreground">{subHeading}</p>}
+    <div className="mb-6 flex justify-between items-center gap-2">
+      <div>
+        {heading && (
+          <h1 className="text-3xl font-bold tracking-tight">{heading}</h1>
+        )}
+        {subHeading && <p className="text-muted-foreground">{subHeading}</p>}
+      </div>
       {buttonTitle && onClickButton && (
         <div className="mt-4">
           <Button onClick={onClickButton}>{buttonTitle}</Button>

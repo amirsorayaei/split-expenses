@@ -1015,6 +1015,18 @@
   dependencies:
     tslib "^2.8.0"
 
+"@t3-oss/env-core@0.13.4":
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/@t3-oss/env-core/-/env-core-0.13.4.tgz#db44a5090e1b2501afb52242b957d30f514223a2"
+  integrity sha512-zVOiYO0+CF7EnBScz8s0O5JnJLPTU0lrUi8qhKXfIxIJXvI/jcppSiXXsEJwfB4A6XZawY/Wg/EQGKANi/aPmQ==
+
+"@t3-oss/env-nextjs@^0.13.4":
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/@t3-oss/env-nextjs/-/env-nextjs-0.13.4.tgz#59f241cc377a2cd5dd345b4c60024f1697b40784"
+  integrity sha512-6ecXR7SH7zJKVcBODIkB7wV9QLMU23uV8D9ec6P+ULHJ5Ea/YXEHo+Z/2hSYip5i9ptD/qZh8VuOXyldspvTTg==
+  dependencies:
+    "@t3-oss/env-core" "0.13.4"
+
 "@types/d3-array@^3.0.3":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@types/d3-array/-/d3-array-3.2.1.tgz#1f6658e3d2006c4fceac53fde464166859f8b8c5"
