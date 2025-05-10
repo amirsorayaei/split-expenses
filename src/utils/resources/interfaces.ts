@@ -32,4 +32,6 @@ export interface Balance {
   amount: number;
   isPaid: boolean;
   paidAmount: number;
+  paymentMethod?: string;
+  paymentNote?: string;
 }

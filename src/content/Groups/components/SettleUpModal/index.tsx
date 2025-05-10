@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -130,12 +130,31 @@ const SettleUpModal = ({ open, onOpenChange, group }: SettleUpModalProps) => {
 
   const handleRecordPayment = (balance: Balance) => {
     setSelectedBalance(balance);
-    setPaymentAmount(balance.amount.toString());
+    setPaymentAmount(
+      balance.isPaid
+        ? (balance.amount - balance.paidAmount).toString()
+        : balance.amount.toString()
+    );
     setActiveTab("record");
   };
 
   const handleSubmitPayment = () => {
-    dispatch(updateBalance({ groupId: group?.id!, balance: selectedBalance! }));
+    if (selectedBalance) {
+      dispatch(
+        updateBalance({
+          groupId: group?.id!,
+          balance: {
+            ...selectedBalance,
+            isPaid: true,
+            paidAmount: selectedBalance.isPaid
+              ? selectedBalance.paidAmount + +paymentAmount
+              : +paymentAmount,
+            paymentMethod,
+            paymentNote,
+          },
+        })
+      );
+    }
     setActiveTab("balances");
     setSelectedBalance(null);
   };
@@ -222,18 +241,37 @@ const SettleUpModal = ({ open, onOpenChange, group }: SettleUpModalProps) => {
                               </div>
                               <div className="text-[#10B981] font-semibold">
                                 {formatCurrency(
-                                  balance.amount,
+                                  balance.isPaid
+                                    ? balance.amount - balance.paidAmount
+                                    : balance.amount,
                                   group?.currency!
                                 )}
                               </div>
+                              {balance.isPaid && (
+                                <div className="text-xs font-medium">
+                                  Full Payment:{" "}
+                                  {formatCurrency(
+                                    balance.amount,
+                                    group?.currency!
+                                  )}
+                                </div>
+                              )}
                             </div>
                           </div>
                           <Button
                             size="sm"
-                            className="bg-[#10B981] hover:bg-[#059669] text-white"
+                            className={
+                              balance.amount !== balance.paidAmount
+                                ? "bg-[#10B981] hover:bg-[#059669]"
+                                : ""
+                            }
                             onClick={() => handleRecordPayment(balance)}
+                            disabled={balance.amount === balance.paidAmount}
+                            variant="outline"
                           >
-                            Settle
+                            {balance.amount === balance.paidAmount
+                              ? "Paid"
+                              : "Settle"}
                           </Button>
                         </div>
                       </Card>
@@ -285,7 +323,10 @@ const SettleUpModal = ({ open, onOpenChange, group }: SettleUpModalProps) => {
                           </div>
                           <div className="text-[#10B981] font-semibold">
                             {formatCurrency(
-                              selectedBalance.amount,
+                              selectedBalance.isPaid
+                                ? selectedBalance.amount -
+                                    selectedBalance.paidAmount
+                                : selectedBalance.amount,
                               group?.currency!
                             )}
                           </div>
@@ -377,7 +418,11 @@ const SettleUpModal = ({ open, onOpenChange, group }: SettleUpModalProps) => {
             <Button
               className="bg-[#10B981] hover:bg-[#059669] text-white"
               onClick={handleSubmitPayment}
-              disabled={!paymentMethod || !paymentAmount}
+              disabled={
+                !paymentMethod ||
+                !paymentAmount ||
+                +paymentAmount > selectedBalance.amount
+              }
             >
               Record Payment
             </Button>
