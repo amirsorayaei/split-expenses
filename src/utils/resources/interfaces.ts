@@ -4,6 +4,9 @@ export interface Group {
   currency: string;
   users: User[];
   expenses?: Expense[];
+  balances?: Balance[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface User {
@@ -19,4 +22,14 @@ export interface Expense {
   amount: number;
   payor: User;
   createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface Balance {
+  id?: number;
+  from: User;
+  to: User;
+  amount: number;
+  isPaid: boolean;
+  paidAmount: number;
 }

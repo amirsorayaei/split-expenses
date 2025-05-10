@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 import CreateExpense from "@/src/content/Expenses/Create";
 
-const GroupDetailsPage = () => {
+const CreateExpensePage = () => {
   const router = useRouter();
 
   const { groupId, expenseId } = router.query;
@@ -27,4 +27,4 @@ const GroupDetailsPage = () => {
   );
 };
 
-export default GroupDetailsPage;
+export default CreateExpensePage;

@@ -13,6 +13,7 @@ module.exports = {
       center: true,
       padding: "2rem",
       screens: {
+        "xl": "1280px",
         "2xl": "1400px",
       },
     },
@@ -51,6 +52,7 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "gray-850": "#1a1a1a",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactNode } from "react";
+import React, { ChangeEvent, HTMLInputTypeAttribute, ReactNode } from "react";
 import { Input } from "@/components/ui/input";
 
 interface Props {
@@ -7,9 +7,9 @@ interface Props {
   onChangeText(value: string): void;
   value?: string;
   placeholder?: string;
-  type?: string;
+  type?: HTMLInputTypeAttribute;
   className?: string;
-  endAdornment: ReactNode;
+  endAdornment?: ReactNode;
 }
 
 const TextField = ({
