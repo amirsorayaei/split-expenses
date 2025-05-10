@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { User } from "@/src/utils/resources/interfaces";
 import Snack from "@/src/components/Snack/Snack";
+import TextField from "@/src/components/TextField/TextField";
 
 interface Props {
   users: User[];
@@ -118,10 +119,11 @@ const UserItem = forwardRef(
     return (
       <div className="flex items-center space-x-2">
         <span className="min-w-[100px]">{user.name}</span>
-        <Input
+        <TextField
+          id="share"
           type="number"
           value={share}
-          onChange={(e) => handleOnChangeShare(e.target.value)}
+          onChangeText={handleOnChangeShare}
           placeholder="Enter share amount"
           className="flex-1"
         />

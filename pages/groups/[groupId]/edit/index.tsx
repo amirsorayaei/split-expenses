@@ -1,4 +1,4 @@
-import GroupForm from "@/src/content/Groups/Form";
+import GroupForm from "@/src/content/Groups/components/Form";
 import Head from "next/head";
 
 const EditGroupPage = () => {

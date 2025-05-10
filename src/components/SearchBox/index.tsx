@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useImperativeHandle,
-  ChangeEvent,
-  forwardRef,
-} from "react";
-import { Input } from "@/components/ui/input";
+import React, { useState, useImperativeHandle, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 
@@ -12,6 +6,7 @@ import {
   convertToEnglishDigit,
   removeWhiteSpaceFromString,
 } from "@/src/utils/resources/Functions";
+import TextField from "../TextField/TextField";
 
 interface Props {
   onSearch(value: string): void;
@@ -28,8 +23,8 @@ const SearchBox = forwardRef<{ getValue(): string }, Props>(
       },
     }));
 
-    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const newValue = convertToEnglishDigit(e.target.value);
+    const handleOnChange = (value: string) => {
+      const newValue = convertToEnglishDigit(value);
       setValue(removeWhiteSpaceFromString(newValue));
     };
 
@@ -37,20 +32,15 @@ const SearchBox = forwardRef<{ getValue(): string }, Props>(
       onSearch(value);
     };
 
-    const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter") {
-        onSearch(value);
-      }
-    };
-
     return (
       <div className="flex w-full items-center space-x-2">
-        <Input
+        <TextField
+          id="search"
           type="text"
           placeholder={placeholder}
           value={value}
-          onChange={handleOnChange}
-          onKeyDown={handleOnKeyDown}
+          onChangeText={handleOnChange}
+          handleSubmit={handleOnClick}
         />
         <Button
           type="button"
