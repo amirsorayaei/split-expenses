@@ -3,7 +3,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import Thunk from "redux-thunk";
 
-import GroupReducer from "@/redux/slices/groupSlice";
+import GroupReducer from "@/src/redux/slices/groupSlice";
 
 const persistConfig = {
   key: "primary",

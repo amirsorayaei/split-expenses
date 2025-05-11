@@ -1,42 +1,50 @@
-import React, { ChangeEvent } from "react";
-import { TextField as MaterialTextField, TextFieldProps } from "@mui/material";
-import { NumericFormat, NumericFormatProps } from "react-number-format";
+import React, { ChangeEvent, HTMLInputTypeAttribute, ReactNode } from "react";
+import { Input } from "@/components/ui/input";
 
 interface Props {
+  id: string;
   handleSubmit?(): void;
   onChangeText(value: string): void;
+  value?: string;
+  placeholder?: string;
+  type?: HTMLInputTypeAttribute;
+  className?: string;
+  endAdornment?: ReactNode;
 }
 
 const TextField = ({
+  id,
   handleSubmit,
   onChangeText,
-  ...props
-}: Props & TextFieldProps) => {
-  const onKeyDown = (e: any) => {
-    // It triggers by pressing the enter key
-    if (e.keyCode === 13) {
-      handleSubmit?.();
+  value,
+  placeholder,
+  type = "text",
+  className,
+  endAdornment,
+}: Props) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onChangeText(e.target.value);
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && handleSubmit) {
+      handleSubmit();
     }
   };
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChangeText(event.target.value);
-  };
-
-  if (props.inputMode === "numeric") {
-    return (
-      <NumericFormat
-        customInput={MaterialTextField as any}
-        onKeyDown={onKeyDown}
-        thousandSeparator={","}
-        onValueChange={(values) => onChangeText(values.value)}
-        {...(props as NumericFormatProps)}
-      />
-    );
-  }
-
   return (
-    <MaterialTextField onChange={onChange} onKeyDown={onKeyDown} {...props} />
+    <div className="flex items-center gap-4">
+      <Input
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        className={className}
+      />
+      {endAdornment}
+    </div>
   );
 };
 

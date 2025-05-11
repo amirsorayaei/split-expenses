@@ -1,5 +1,4 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
 
 interface Props {
   message: string;
@@ -7,16 +6,9 @@ interface Props {
 
 const EmptyContent = ({ message }: Props) => {
   return (
-    <Box
-      display={"flex"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      my={5}
-    >
-      <Typography data-testid="empty-message" variant={"h4"}>
-        {message}
-      </Typography>
-    </Box>
+    <div className="flex h-32 items-center justify-center">
+      <p className="text-muted-foreground">{message}</p>
+    </div>
   );
 };
 

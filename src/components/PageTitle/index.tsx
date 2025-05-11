@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Typography, Button, Grid, Box, useTheme } from "@mui/material";
+import { Button } from "@/components/ui/button";
 
 interface PageTitleProps {
   heading?: string;
@@ -9,50 +9,30 @@ interface PageTitleProps {
 }
 
 const PageTitle: FC<PageTitleProps> = ({
-  heading = "",
-  subHeading = "",
-  buttonTitle = "",
+  heading,
+  subHeading,
+  buttonTitle,
   onClickButton,
-  ...rest
 }) => {
-  const theme = useTheme();
-
   return (
-    <Box sx={{ mb: theme.spacing(5) }}>
-      <Grid
-        container
-        justifyContent="space-between"
-        alignItems="center"
-        {...rest}
-      >
-        <Grid item>
-          <Typography
-            data-testid="page-title-heading"
-            variant="h1"
-            component="h1"
-            gutterBottom
-          >
-            {heading}
-          </Typography>
-          <Typography data-testid="page-title-subheading" variant="subtitle2">
-            {subHeading}
-          </Typography>
-        </Grid>
-        {!!buttonTitle && (
-          <Grid item>
-            <Button
-              data-testid="page-title-button"
-              sx={{ mt: { xs: 2, md: 0 } }}
-              variant="contained"
-              color={"secondary"}
-              onClick={onClickButton}
-            >
-              {buttonTitle}
-            </Button>
-          </Grid>
+    <div className="mb-6 flex justify-between items-center gap-2">
+      <div>
+        {heading && (
+          <h1 className="text-3xl font-bold tracking-tight">{heading}</h1>
         )}
-      </Grid>
-    </Box>
+        {subHeading && <p className="text-muted-foreground">{subHeading}</p>}
+      </div>
+      {buttonTitle && onClickButton && (
+        <div className="mt-4">
+          <Button
+            className="w-full bg-[#10B981] hover:bg-[#059669] text-white h-12 text-base"
+            onClick={onClickButton}
+          >
+            {buttonTitle}
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 

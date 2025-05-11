@@ -1,7 +1,7 @@
 import React from "react";
 import { SnackbarProvider, closeSnackbar } from "notistack";
-import { Button, Grow } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 interface Props {
   children: React.ReactNode | React.ReactNode[];
@@ -14,16 +14,14 @@ const SnackProvider = ({ children }: Props) => {
       preventDuplicate
       hideIconVariant
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      TransitionComponent={Grow}
       action={
         <Button
-          color={"primary"}
-          variant={"text"}
-          size={"small"}
+          variant="ghost"
+          size="icon"
           onClick={() => closeSnackbar()}
-          sx={{ minWidth: "auto" }}
+          className="h-8 w-8"
         >
-          <CloseIcon color={"action"} />
+          <X className="h-4 w-4" />
         </Button>
       }
     >

@@ -1,4 +1,4 @@
-import CreateGroup from "@/content/Groups/Create";
+import GroupForm from "@/src/content/Groups/components/Form";
 import Head from "next/head";
 
 const CreateGroupPage = () => {
@@ -7,7 +7,7 @@ const CreateGroupPage = () => {
       <Head>
         <title>{"Create Group"}</title>
       </Head>
-      <CreateGroup />
+      <GroupForm type="create" />
     </>
   );
 };

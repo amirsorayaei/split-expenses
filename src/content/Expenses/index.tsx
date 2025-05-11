@@ -1,24 +1,25 @@
 import React, { useState } from "react";
-import { Button, TableCell, Typography, Box } from "@mui/material";
 import { useRouter } from "next/router";
-
-import Table from "@/components/Table";
-import { Expense, Group, User } from "@/utils/resources/interfaces";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { deleteExpense } from "@/redux/slices/groupSlice";
-import ActionButtons from "@/components/ActionButtons";
+
+import CustomTable from "@/src/components/Table";
+import { Expense, Group, User } from "@/src/utils/resources/interfaces";
+import { RootState } from "@/src/redux/store";
+import { deleteExpense } from "@/src/redux/slices/groupSlice";
+import ActionButtons from "@/src/components/ActionButtons";
 import {
   getTotalAmountOfExpenses,
   numberFormat,
-} from "@/utils/resources/Functions";
+} from "@/src/utils/resources/Functions";
+import { Button } from "@/components/ui/button";
+import { TableCell } from "@/components/ui/table";
 
 interface Props {
   group: Group;
 }
 
 const Expenses = ({ group }: Props) => {
-  const [result, setResult] = useState<any[]>([]);
+  const [result, setResult] = useState<string[]>([]);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -121,104 +122,88 @@ const Expenses = ({ group }: Props) => {
     return usersText;
   };
 
+  const handleOnCreateExpense = () => {
+    router.push(`/groups/${group.id}/create-expense`);
+  };
+
+  const onClickEditGroup = () => {
+    router.push(`/groups/${group.id}/edit`);
+  };
+
   const renderItem = (item: Expense) => {
     const onDeleteExpense = () => {
       dispatch(deleteExpense({ groupId: group.id, expenseId: item.id }));
     };
 
-    return (
-      <>
-        <TableCell>
-          <Typography>{item.id}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.name}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.users?.length + " " + "people"}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.payor.name}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>
-            {`${numberFormat(item.amount)} ${group.currency}`}
-          </Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.createdAt}</Typography>
-        </TableCell>
-        <TableCell>
-          <ActionButtons
-            onDelete={onDeleteExpense}
-            dialogSettings={{
-              title: "Delete expense?",
-              message: "Do you want to delete this expense?",
-              confirmBtn: "Yes",
-              cancelBtn: "No",
-            }}
-          />
-        </TableCell>
-      </>
-    );
+    return [
+      <TableCell key="id">{item.id}</TableCell>,
+      <TableCell key="name">{item.name}</TableCell>,
+      <TableCell key="users">{item.users?.length + " people"}</TableCell>,
+      <TableCell key="payor">{item.payor.name}</TableCell>,
+      <TableCell key="amount">{`${numberFormat(item.amount)} ${
+        group.currency
+      }`}</TableCell>,
+      <TableCell key="created">{item.createdAt}</TableCell>,
+      <TableCell key="actions">
+        <ActionButtons
+          onDelete={onDeleteExpense}
+          dialogSettings={{
+            title: "Delete expense?",
+            message: "Do you want to delete this expense?",
+          }}
+        />
+      </TableCell>,
+    ];
   };
 
   return (
-    <>
-      <Box
-        px={2}
-        pb={1}
-        display={"flex"}
-        alignItems={"flex-start"}
-        justifyContent={"space-between"}
-      >
-        <Typography data-testid="group-usersname">
-          {getUsersName(group.users)}
-        </Typography>
-        <Typography>{`Total expense: ${getTotalAmountOfExpenses(
-          group.expenses
-        )} ${group.currency}`}</Typography>
-      </Box>
-      <Table
+    <div className="space-y-6">
+      <div className="flex items-start justify-between px-4 pb-2">
+        <div data-testid="group-usersname">{getUsersName(group.users)}</div>
+        <div>{`Total expense: ${getTotalAmountOfExpenses(group.expenses)} ${
+          group.currency
+        }`}</div>
+      </div>
+      <CustomTable
         data={expenses}
         renderItem={renderItem}
-        title={"Expenses Table List"}
-        emptyMessage={"No expenses found !"}
+        title="Expenses Table List"
+        emptyMessage="No expenses found!"
         onClickItem={onClickItem}
+        action={
+          <div className="flex items-center gap-2">
+            <Button variant="secondary" onClick={onClickEditGroup}>
+              Edit Group
+            </Button>
+            <Button onClick={handleOnCreateExpense}>Create Expense</Button>
+          </div>
+        }
         tableColumns={[
-          { text: "ID" },
-          { text: "Name" },
-          { text: "Users count" },
-          { text: "Payor" },
-          { text: "Expense amount" },
-          { text: "Created at" },
+          { text: "ID", align: "left" as const },
+          { text: "Name", align: "left" as const },
+          { text: "Users count", align: "left" as const },
+          { text: "Payor", align: "left" as const },
+          { text: "Expense amount", align: "left" as const },
+          { text: "Created at", align: "left" as const },
+          { text: "Actions", align: "right" as const },
         ]}
       />
-      <Box
-        p={2}
-        pb={0}
-        display={"flex"}
-        alignItems={"flex-start"}
-        justifyContent={"space-between"}
-      >
-        <Box>
-          {result.map((item, index) => {
-            return (
-              <Typography key={index}>
-                {index + 1} - {item}
-              </Typography>
-            );
-          })}
-        </Box>
+      <div className="flex items-start justify-between p-4">
+        <div className="space-y-2">
+          {result.map((item, index) => (
+            <div key={index}>
+              {index + 1} - {item}
+            </div>
+          ))}
+        </div>
         <Button
-          variant="contained"
-          color={"secondary"}
+          className="rounded-md bg-secondary px-4 py-2 text-secondary-foreground hover:bg-secondary/80"
           onClick={minimizeTransactions}
         >
-          {"Calculate"}
+          Calculate
         </Button>
-      </Box>
-    </>
+      </div>
+    </div>
   );
 };
 

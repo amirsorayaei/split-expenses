@@ -1,132 +1,101 @@
 import { Component } from "react";
-import { Button, Dialog, DialogTitle, Grid, Typography } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface Props {}
 
-interface State extends DialogProps {
-  visible: boolean;
+interface State {
+  open: boolean;
+  title: string;
+  message: string;
+  onClickConfirm?(): void;
+  onClickCancel?(): void;
+  color?: "primary" | "error";
 }
 
 export interface DialogProps {
   title: string;
   message: string;
-  confirmBtn: string;
-  cancelBtn?: string;
-  color?:
-    | "inherit"
-    | "primary"
-    | "secondary"
-    | "success"
-    | "error"
-    | "info"
-    | "warning";
   onClickConfirm?(): void;
+  onClickCancel?(): void;
+  color?: "primary" | "error";
 }
 
 class DialogAlert extends Component<Props, State> {
-  static myComponentInstance: any;
+  static instance: DialogAlert | null = null;
 
-  static showDialog({
-    title,
-    message,
-    confirmBtn,
-    cancelBtn,
-    onClickConfirm,
-    color,
-  }: DialogProps) {
-    DialogAlert.myComponentInstance.setState({
-      visible: true,
-      title,
-      message,
-      confirmBtn,
-      cancelBtn,
-      onClickConfirm,
-      color,
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      open: false,
+      title: "",
+      message: "",
+    };
+  }
+
+  componentDidMount() {
+    DialogAlert.instance = this;
+  }
+
+  componentWillUnmount() {
+    DialogAlert.instance = null;
+  }
+
+  static showDialog(props: DialogProps) {
+    DialogAlert.instance?.setState({
+      open: true,
+      ...props,
     });
   }
 
   static closeDialog() {
-    DialogAlert.myComponentInstance.setState({
-      visible: false,
-      message: "",
-      confirmBtn: "",
-      cancelBtn: "",
-      onClickConfirm: null,
-      color: undefined,
+    DialogAlert.instance?.setState({
+      open: false,
     });
   }
 
-  constructor(props: any) {
-    super(props);
-
-    this.state = {
-      visible: false,
-      title: "",
-      message: "",
-      confirmBtn: "",
-      cancelBtn: "",
-      onClickConfirm: undefined,
-      color: undefined,
-    };
-
-    DialogAlert.myComponentInstance = this;
-    this.onClickCancel = this.onClickCancel.bind(this);
-  }
-
-  onClickCancel() {
-    this.setState({ visible: false });
-  }
-
   render() {
+    const { open, title, message, onClickConfirm, onClickCancel, color } =
+      this.state;
+
     return (
       <Dialog
-        data-testid={"dialog-alert"}
-        open={this.state.visible}
-        onClose={this.onClickCancel}
+        open={open}
+        onOpenChange={(open) => !open && this.setState({ open })}
       >
-        <DialogTitle data-testid={"dialog-title"} textAlign={"center"}>
-          {this.state.title}
-        </DialogTitle>
-        <Grid
-          maxWidth={450}
-          flex={1}
-          display={"flex"}
-          flexDirection={"column"}
-          alignItems={"center"}
-          justifyContent={"center"}
-          px={3}
-          pb={2}
-        >
-          <Typography data-testid={"dialog-message"} textAlign={"center"}>
-            {this.state.message}
-          </Typography>
-          <Grid container spacing={1.5} pt={3}>
-            {!!this.state.cancelBtn && (
-              <Grid item xs={6}>
-                <Button
-                  data-testid={"dialog-cancel-btn"}
-                  color={this.state.color}
-                  variant="outlined"
-                  fullWidth
-                  onClick={this.onClickCancel}
-                >
-                  {this.state.cancelBtn}
-                </Button>
-              </Grid>
-            )}
-            <Grid item xs={!!this.state.cancelBtn ? 6 : 12}>
-              <Button
-                data-testid={"dialog-confirm-btn"}
-                color={this.state.color}
-                variant="contained"
-                fullWidth
-                onClick={this.state.onClickConfirm}
-              >
-                {this.state.confirmBtn}
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{message}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                onClickCancel?.();
+                this.setState({ open: false });
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant={color === "error" ? "destructive" : "default"}
+              onClick={() => {
+                onClickConfirm?.();
+                this.setState({ open: false });
+              }}
+            >
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
       </Dialog>
     );
   }

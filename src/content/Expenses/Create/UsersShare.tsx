@@ -3,12 +3,13 @@ import React, {
   useRef,
   forwardRef,
   useImperativeHandle,
+  useEffect,
 } from "react";
-import { Grid, Typography, Button } from "@mui/material";
-
-import { User } from "@/utils/resources/interfaces";
-import Snack from "@/components/Snack/Snack";
-import TextField from "@/components/TextField/TextField";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { User } from "@/src/utils/resources/interfaces";
+import Snack from "@/src/components/Snack/Snack";
+import TextField from "@/src/components/TextField/TextField";
 
 interface Props {
   users: User[];
@@ -22,14 +23,27 @@ interface UserItemProps {
   index: number;
   userShare: number;
   currency?: string;
+  onShareChange?: (share: number) => void;
 }
 
 interface UserItemRef {
   getUserShare(): User;
+  setShare(share: number): void;
 }
 
 const UsersShare = ({ users, amount, submit, currency }: Props) => {
   const usersShare = useRef<UserItemRef[]>([]);
+
+  // Recalculate shares when amount changes
+  useEffect(() => {
+    const equalShare = amount / users.length;
+    usersShare.current.forEach((ref) => {
+      if (ref) {
+        const newShare = equalShare;
+        ref.setShare(newShare);
+      }
+    });
+  }, [amount, users]);
 
   const onClickSubmit = () => {
     const usersWithShare: User[] = usersShare.current.map((item) =>
@@ -49,35 +63,41 @@ const UsersShare = ({ users, amount, submit, currency }: Props) => {
   };
 
   return (
-    <>
-      <Grid container spacing={2}>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {users.map((user, index) => {
-          const share = user.share?.toString()
-            ? user.share
-            : amount / users.length;
+          const initialShare = user.share || amount / users.length;
 
           return (
             <UserItem
-              ref={(ref: UserItemRef) => (usersShare.current[index] = ref)}
+              ref={(ref: UserItemRef) => {
+                usersShare.current[index] = ref;
+              }}
               key={user.id}
               user={user}
               index={index}
-              userShare={share}
+              userShare={initialShare}
               currency={currency}
             />
           );
         })}
-      </Grid>
-      <Button onClick={onClickSubmit} sx={{ mt: 2 }} variant={"contained"}>
-        {"Submit"}
-      </Button>
-    </>
+      </div>
+      <div className="flex justify-center pt-4">
+        <Button className="w-full max-w-sm" onClick={onClickSubmit}>
+          Submit
+        </Button>
+      </div>
+    </div>
   );
 };
 
 const UserItem = forwardRef(
-  ({ user, userShare, index, currency }: UserItemProps, ref) => {
-    const [share, setShare] = useState<string>(userShare.toString());
+  ({ user, userShare, currency }: UserItemProps, ref) => {
+    const [share, setShare] = useState<string>("");
+
+    useEffect(() => {
+      setShare(userShare?.toString());
+    }, [userShare]);
 
     useImperativeHandle(ref, () => ({
       getUserShare() {
@@ -87,6 +107,9 @@ const UserItem = forwardRef(
         };
         return users;
       },
+      setShare(newShare: number) {
+        setShare(newShare.toString());
+      },
     }));
 
     const handleOnChangeShare = (value: string) => {
@@ -94,20 +117,18 @@ const UserItem = forwardRef(
     };
 
     return (
-      <Grid key={index} item xs={12} sm={6}>
+      <div className="flex items-center space-x-2">
+        <span className="min-w-[100px]">{user.name}</span>
         <TextField
-          id={`user-share-${index}-textfield`}
+          id="share"
+          type="number"
           value={share}
           onChangeText={handleOnChangeShare}
-          label="Share"
-          fullWidth
-          inputMode="numeric"
-          InputProps={{
-            startAdornment: <Typography mr={1.5}>{user.name}</Typography>,
-            endAdornment: <Typography ml={1.5}>{currency}</Typography>,
-          }}
+          placeholder="Enter share amount"
+          className="flex-1"
         />
-      </Grid>
+        {currency && <span className="ml-2">{currency}</span>}
+      </div>
     );
   }
 );
