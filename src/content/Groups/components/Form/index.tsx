@@ -23,7 +23,7 @@ import { Users, Plus, X, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Group, User } from "@/src/utils/resources/interfaces";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { store } from "@/src/redux/store";
 import { createGroup, updateGroup } from "@/src/redux/slices/groupSlice";
 import Snack from "@/src/components/Snack/Snack";

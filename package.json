@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.31.4",
+    "@clerk/nextjs": "6.19.4",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",
@@ -43,6 +45,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
+    "convex": "^1.24.1",
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.5.1",
     "framer-motion": "^12.10.5",

@@ -19,7 +19,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Input } from "@/components/ui/input";
 
 import heroImage from "@/public/images/hero.webp";
 import { Routes } from "@/src/core/routes";
@@ -429,8 +428,6 @@ export default function LandingPage() {
                 <form className="flex w-full max-w-sm flex-col gap-2">
                   <TextField
                     id="email"
-                    value=""
-                    onChangeText={() => {}}
                     type="email"
                     placeholder="Enter your email"
                   />

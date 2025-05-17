@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ChangeEvent, HTMLInputTypeAttribute, ReactNode } from "react";
 import { Input } from "@/components/ui/input";
 

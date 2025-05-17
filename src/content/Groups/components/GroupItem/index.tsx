@@ -18,7 +18,7 @@ import {
 } from "@/lib/utils";
 import { motion } from "framer-motion";
 import ExpenseCard from "../ExpenseCard";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SettleUpModal from "../SettleUpModal";
 

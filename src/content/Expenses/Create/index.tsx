@@ -1,3 +1,5 @@
+"use client";
+
 import type React from "react";
 
 import { useState, useEffect } from "react";
@@ -32,7 +34,7 @@ import { Expense, User } from "@/src/utils/resources/interfaces";
 import { getRandomPastelColor } from "@/lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/redux/store";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { createExpense, updateExpense } from "@/src/redux/slices/groupSlice";
 import Snack from "@/src/components/Snack/Snack";
 import TextField from "@/src/components/TextField/TextField";
