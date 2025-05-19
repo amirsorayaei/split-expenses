@@ -1,3 +1,5 @@
+"use client";
+
 import { useSnackbar } from "notistack";
 
 import Snack from "./Snack";
