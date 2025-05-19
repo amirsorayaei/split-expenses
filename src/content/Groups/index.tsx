@@ -1,22 +1,14 @@
+"use client";
+
 import { useState } from "react";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import {
-  formatCurrency,
-  getRandomPastelColor,
-  isEmptyArray,
-} from "@/lib/utils";
-import { motion } from "framer-motion";
-import { Group, User } from "@/src/utils/resources/interfaces";
+import { Group } from "@/src/utils/resources/interfaces";
 import { RootState } from "@/src/redux/store";
 import { useSelector } from "react-redux";
 import PageTitle from "@/src/components/PageTitle";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { BASE_API_URL } from "@/src/core/constants";
 import { Routes } from "@/src/core/routes";
-import ExpenseCard from "./components/ExpenseCard";
-import SettleUpModal from "./components/SettleUpModal";
 import GroupItem from "./components/GroupItem";
 
 const Groups = () => {

@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
 import CustomTable from "@/src/components/Table";
@@ -132,7 +134,7 @@ const Expenses = ({ group }: Props) => {
 
   const renderItem = (item: Expense) => {
     const onDeleteExpense = () => {
-      dispatch(deleteExpense({ groupId: group.id, expenseId: item.id }));
+      dispatch(deleteExpense({ groupId: group.id!, expenseId: item.id! }));
     };
 
     return [
