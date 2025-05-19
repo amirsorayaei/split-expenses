@@ -59,7 +59,7 @@ export default defineSchema({
     updatedAt: v.number(),
     deletedAt: v.optional(v.number()),
     lastActive: v.optional(v.number()),
-  }),
+  }).index("by_clerk_id", ["clerkId"]),
 
   // Balances table - stores payment balances between users
   balances: defineTable({
