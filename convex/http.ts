@@ -7,7 +7,9 @@ import { Webhook } from "svix";
 const CLERK_WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET!;
 
 const handleClerkWebhook = httpAction(async (ctx, request) => {
+  console.log("Starting cleck webhook");
   const event = await validateRequest(request);
+  console.log("Event", event);
   if (!event) {
     return new Response("Error occured", {
       status: 400,
@@ -63,6 +65,8 @@ http.route({
   handler: handleClerkWebhook,
 });
 
+console.log("RUNNING HTTP.......");
+
 async function validateRequest(
   req: Request
 ): Promise<WebhookEvent | undefined> {
@@ -74,6 +78,7 @@ async function validateRequest(
     "svix-signature": req.headers.get("svix-signature")!,
   };
   const wh = new Webhook(CLERK_WEBHOOK_SECRET);
+  console.log("Webhook connection", wh);
   let evt: Event | null = null;
   try {
     evt = wh.verify(payloadString, svixHeaders) as Event;
