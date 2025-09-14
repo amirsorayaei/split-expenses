@@ -44,13 +44,13 @@ const GroupForm = ({ type }: Props) => {
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const { groupId } = router.query;
+  const { groupId = null } = router.query ?? {};
 
   useEffect(() => {
     if (type === "edit") {
       const selectedGroup = store
         .getState()
-        .group.groups.find((item) => item.id === +groupId!);
+        .group.groups.find((item) => item.id === groupId);
 
       if (selectedGroup) {
         setGroupName(selectedGroup.name);
