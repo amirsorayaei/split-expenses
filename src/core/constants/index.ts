@@ -1,4 +1,4 @@
-const API_URL = "https://split-expenses-amirsorayaeis-projects.vercel.app/";
+const API_URL = "https://split-expenses.amirsorayaei.com/";
 const LOCAL_API_URL = "http://localhost:3000";
 
 export const BASE_API_URL =
