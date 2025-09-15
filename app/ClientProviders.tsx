@@ -1,7 +1,6 @@
 "use client";
 
 import { ReactNode } from "react";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -17,25 +16,23 @@ import "../styles/globals.css";
 
 export const ClientProviders = ({ children }: { children: ReactNode }) => {
   return (
-    <ClerkProvider>
-      <ConvexClientProvider>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SnackProvider>
-            <Provider store={store}>
-              <PersistGate loading={null} persistor={persistor}>
-                <DialogAlert />
-                <SnackHOC />
-                <BaseLayout>{children}</BaseLayout>
-              </PersistGate>
-            </Provider>
-          </SnackProvider>
-        </ThemeProvider>
-      </ConvexClientProvider>
-    </ClerkProvider>
+    <ConvexClientProvider>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="dark"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <SnackProvider>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <DialogAlert />
+              <SnackHOC />
+              <BaseLayout>{children}</BaseLayout>
+            </PersistGate>
+          </Provider>
+        </SnackProvider>
+      </ThemeProvider>
+    </ConvexClientProvider>
   );
 };

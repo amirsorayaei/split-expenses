@@ -8,7 +8,7 @@ export const create = mutation({
     date: v.string(),
     category: v.string(),
     description: v.optional(v.string()),
-    groupId: v.string(),
+    groupId: v.id("groups"),
     participants: v.array(v.string()),
     paidBy: v.string(),
   },
@@ -29,7 +29,7 @@ export const create = mutation({
 
 export const list = query({
   args: {
-    groupId: v.string(),
+    groupId: v.id("groups"),
   },
   handler: async (ctx, args) => {
     const expenses = await ctx.db

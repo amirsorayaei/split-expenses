@@ -3,9 +3,17 @@ import { v } from "convex/values";
 
 export const create = mutation({
   args: {
-    name: v.string(),
-    description: v.optional(v.string()),
-    members: v.array(v.string()),
+    title: v.string(),
+    currency: v.string(),
+    users: v.array(
+      v.object({
+        id: v.optional(v.id("users")),
+        name: v.string(),
+        email: v.optional(v.string()),
+        isRegistered: v.boolean(),
+        joinedAt: v.number(),
+      })
+    ),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -13,9 +21,13 @@ export const create = mutation({
       throw new Error("Not authenticated");
     }
 
+    const now = Date.now();
     const groupId = await ctx.db.insert("groups", {
       ...args,
-      createdBy: identity.subject,
+      expenses: [],
+      balances: [],
+      createdAt: now,
+      updatedAt: now,
     });
 
     return groupId;
@@ -29,12 +41,28 @@ export const list = query({
       throw new Error("Not authenticated");
     }
 
+    // Get all groups where the current user is a member
     const groups = await ctx.db
       .query("groups")
-      .filter((q) => q.eq(q.field("createdBy"), identity.subject))
+      .filter((q) =>
+        q.and(
+          q.eq(q.field("deletedAt"), undefined),
+          q.or(
+            // User is the creator (if we track that)
+            q.eq(q.field("createdBy"), identity.subject),
+            // User is in the users array
+            q.gt(q.field("users"), [])
+          )
+        )
+      )
       .collect();
 
-    return groups;
+    // Filter groups where user is actually a member
+    return groups.filter((group) =>
+      group.users.some(
+        (user) => user.id === identity.subject || user.email === identity.email
+      )
+    );
   },
 });
 

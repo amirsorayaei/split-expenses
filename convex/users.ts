@@ -1,74 +1,40 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-export const createUser = mutation({
-  args: {
-    name: v.string(),
-    email: v.string(),
-    clerkId: v.string(),
-  },
-  handler: async (ctx, args) => {
-    const now = Date.now();
-    return await ctx.db.insert("users", {
-      name: args.name,
-      email: args.email,
-      clerkId: args.clerkId,
-      createdAt: now,
-      updatedAt: now,
-    });
+// Get the currently authenticated user's document by _id.
+export const getCurrentUser = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+    // In Convex Auth, identity.subject is the user _id in the "users" table.
+    return await ctx.db.get(identity.subject as any);
   },
 });
 
-export const updateUser = mutation({
+// Ensure current user exists and optionally synchronize name/email.
+// Convex Auth creates the user automatically; we just patch fields if provided.
+export const ensureCurrentUser = mutation({
   args: {
-    clerkId: v.string(),
     name: v.optional(v.string()),
     email: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("users")
-      .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
-      .unique();
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
 
+    const user = await ctx.db.get(identity.subject as any);
     if (!user) {
-      throw new Error("User not found");
+      // If not yet visible (race), just no-op — auth will create it.
+      return identity.subject as any;
     }
 
-    return await ctx.db.patch(user._id, {
-      ...(args.name && { name: args.name }),
-      ...(args.email && { email: args.email }),
-      updatedAt: Date.now(),
-    });
-  },
-});
-
-export const deleteUser = mutation({
-  args: {
-    clerkId: v.string(),
-  },
-  handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("users")
-      .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
-      .unique();
-
-    if (!user) {
-      throw new Error("User not found");
+    const updates: Record<string, unknown> = {};
+    if (args.name && args.name !== (user as any).name) updates.name = args.name;
+    if (args.email && args.email !== (user as any).email)
+      updates.email = args.email;
+    if (Object.keys(updates).length > 0) {
+      await ctx.db.patch((user as any)._id, updates);
     }
-
-    await ctx.db.delete(user._id);
-  },
-});
-
-export const getUser = query({
-  args: {
-    clerkId: v.string(),
-  },
-  handler: async (ctx, args) => {
-    return await ctx.db
-      .query("users")
-      .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
-      .unique();
+    return (user as any)._id;
   },
 });

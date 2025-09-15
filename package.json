@@ -9,9 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@auth/core": "0.37.0",
-    "@clerk/clerk-react": "^5.31.4",
-    "@clerk/nextjs": "6.19.4",
+    "@auth/core": "^0.40.0",
     "@convex-dev/auth": "^0.0.89",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "1.2.2",
@@ -69,7 +67,6 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
     "sonner": "^1.7.1",
-    "svix": "^1.65.0",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.6",

@@ -1,14 +1,29 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import {
+  convexAuthNextjsMiddleware,
+  createRouteMatcher,
+  nextjsMiddlewareRedirect,
+} from "@convex-dev/auth/nextjs/server";
 
+const isSignInPage = createRouteMatcher(["/sign-in(.*)"]);
+const isSignUpPage = createRouteMatcher(["/register(.*)"]);
 const isPublicRoute = createRouteMatcher([
   "/", // landing page
-  "/login(.*)",
+  "/sign-in(.*)",
   "/register(.*)",
 ]);
+const isProtectedRoute = createRouteMatcher(["/groups(.*)", "/dashboard(.*)"]);
 
-export default clerkMiddleware(async (auth, req) => {
-  if (!isPublicRoute(req)) {
-    await auth.protect();
+export default convexAuthNextjsMiddleware(async (request, { convexAuth }) => {
+  // Redirect authenticated users away from auth pages
+  const isAuthenticated = await convexAuth.isAuthenticated();
+
+  if ((isSignInPage(request) || isSignUpPage(request)) && isAuthenticated) {
+    return nextjsMiddlewareRedirect(request, "/groups");
+  }
+
+  // Protect routes that require authentication
+  if (isProtectedRoute(request) && !isAuthenticated) {
+    return nextjsMiddlewareRedirect(request, "/sign-in");
   }
 });
 

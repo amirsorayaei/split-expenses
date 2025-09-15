@@ -1,4 +1,5 @@
 import { defineSchema, defineTable } from "convex/server";
+import { authTables } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 
 // Common user object type for both registered and unregistered users
@@ -10,6 +11,7 @@ const userObject = v.object({
 });
 
 export default defineSchema({
+  ...authTables,
   // Groups table - stores group information and its members
   groups: defineTable({
     title: v.string(),
@@ -50,16 +52,7 @@ export default defineSchema({
     .index("by_group", ["groupId"])
     .index("by_payer", ["payor.id"]),
 
-  // Users table - stores registered user information
-  users: defineTable({
-    name: v.string(),
-    email: v.string(),
-    clerkId: v.string(),
-    createdAt: v.number(),
-    updatedAt: v.number(),
-    deletedAt: v.optional(v.number()),
-    lastActive: v.optional(v.number()),
-  }).index("by_clerk_id", ["clerkId"]),
+  // Users table is provided by Convex Auth via authTables
 
   // Balances table - stores payment balances between users
   balances: defineTable({
