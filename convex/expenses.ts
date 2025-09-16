@@ -3,14 +3,26 @@ import { v } from "convex/values";
 
 export const create = mutation({
   args: {
-    title: v.string(),
+    name: v.string(),
     amount: v.number(),
-    date: v.string(),
-    category: v.string(),
-    description: v.optional(v.string()),
+    payor: v.object({
+      id: v.optional(v.id("users")),
+      name: v.string(),
+      email: v.optional(v.string()),
+      isRegistered: v.boolean(),
+      paidAt: v.number(),
+    }),
+    users: v.array(
+      v.object({
+        id: v.optional(v.id("users")),
+        name: v.string(),
+        email: v.optional(v.string()),
+        isRegistered: v.boolean(),
+        share: v.number(),
+        isPaid: v.boolean(),
+      })
+    ),
     groupId: v.id("groups"),
-    participants: v.array(v.string()),
-    paidBy: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -18,9 +30,11 @@ export const create = mutation({
       throw new Error("Not authenticated");
     }
 
+    const now = Date.now();
     const expenseId = await ctx.db.insert("expenses", {
       ...args,
-      createdBy: identity.subject,
+      createdAt: now,
+      updatedAt: now,
     });
 
     return expenseId;
@@ -54,13 +68,30 @@ export const get = query({
 export const update = mutation({
   args: {
     id: v.id("expenses"),
-    title: v.optional(v.string()),
+    name: v.optional(v.string()),
     amount: v.optional(v.number()),
-    date: v.optional(v.string()),
-    category: v.optional(v.string()),
-    description: v.optional(v.string()),
-    participants: v.optional(v.array(v.string())),
-    paidBy: v.optional(v.string()),
+    payor: v.optional(
+      v.object({
+        id: v.optional(v.id("users")),
+        name: v.string(),
+        email: v.optional(v.string()),
+        isRegistered: v.boolean(),
+        paidAt: v.number(),
+      })
+    ),
+    users: v.optional(
+      v.array(
+        v.object({
+          id: v.optional(v.id("users")),
+          name: v.string(),
+          email: v.optional(v.string()),
+          isRegistered: v.boolean(),
+          share: v.number(),
+          isPaid: v.boolean(),
+        })
+      )
+    ),
+    deletedAt: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -74,12 +105,7 @@ export const update = mutation({
     if (!expense) {
       throw new Error("Expense not found");
     }
-
-    if (expense.createdBy !== identity.subject) {
-      throw new Error("Not authorized to update this expense");
-    }
-
-    await ctx.db.patch(id, updates);
+    await ctx.db.patch(id, { ...updates, updatedAt: Date.now() });
     return id;
   },
 });
@@ -97,10 +123,6 @@ export const remove = mutation({
     const expense = await ctx.db.get(args.id);
     if (!expense) {
       throw new Error("Expense not found");
-    }
-
-    if (expense.createdBy !== identity.subject) {
-      throw new Error("Not authorized to delete this expense");
     }
 
     await ctx.db.delete(args.id);

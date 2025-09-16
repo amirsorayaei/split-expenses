@@ -25,7 +25,7 @@ const PageTitle: FC<PageTitleProps> = ({
       {buttonTitle && onClickButton && (
         <div className="mt-4">
           <Button
-            className="w-full bg-[#10B981] hover:bg-[#059669] text-white h-12 text-base"
+            className="w-full bg-[#10B981] hover:bg-[#059669] text-black h-10 text-base"
             onClick={onClickButton}
           >
             {buttonTitle}

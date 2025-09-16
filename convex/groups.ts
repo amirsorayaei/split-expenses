@@ -3,7 +3,7 @@ import { v } from "convex/values";
 
 export const create = mutation({
   args: {
-    title: v.string(),
+    name: v.string(),
     currency: v.string(),
     users: v.array(
       v.object({
@@ -48,8 +48,6 @@ export const list = query({
         q.and(
           q.eq(q.field("deletedAt"), undefined),
           q.or(
-            // User is the creator (if we track that)
-            q.eq(q.field("createdBy"), identity.subject),
             // User is in the users array
             q.gt(q.field("users"), [])
           )
@@ -80,8 +78,19 @@ export const update = mutation({
   args: {
     id: v.id("groups"),
     name: v.optional(v.string()),
-    description: v.optional(v.string()),
-    members: v.optional(v.array(v.string())),
+    currency: v.optional(v.string()),
+    users: v.optional(
+      v.array(
+        v.object({
+          id: v.optional(v.id("users")),
+          name: v.string(),
+          email: v.optional(v.string()),
+          isRegistered: v.boolean(),
+          joinedAt: v.number(),
+        })
+      )
+    ),
+    deletedAt: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -95,12 +104,7 @@ export const update = mutation({
     if (!group) {
       throw new Error("Group not found");
     }
-
-    if (group.createdBy !== identity.subject) {
-      throw new Error("Not authorized to update this group");
-    }
-
-    await ctx.db.patch(id, updates);
+    await ctx.db.patch(id, { ...updates, updatedAt: Date.now() });
     return id;
   },
 });
@@ -118,10 +122,6 @@ export const remove = mutation({
     const group = await ctx.db.get(args.id);
     if (!group) {
       throw new Error("Group not found");
-    }
-
-    if (group.createdBy !== identity.subject) {
-      throw new Error("Not authorized to delete this group");
     }
 
     await ctx.db.delete(args.id);

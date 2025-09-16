@@ -6,10 +6,14 @@ import { Group } from "@/src/utils/resources/interfaces";
 import { RootState } from "@/src/redux/store";
 import { useSelector } from "react-redux";
 import PageTitle from "@/src/components/PageTitle";
+import EmptyContent from "@/src/components/EmptyContent";
 import { useRouter } from "next/navigation";
 import { BASE_API_URL } from "@/src/core/constants";
 import { Routes } from "@/src/core/routes";
 import GroupItem from "./components/GroupItem";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { isEmptyArray } from "@/lib/utils";
 
 const Groups = () => {
   const [expandedGroup, setExpandedGroup] = useState<number | null>(null);
@@ -22,11 +26,9 @@ const Groups = () => {
   });
 
   const router = useRouter();
+  const groups = useQuery(api.groups.list);
 
-  /**
-   * Clone groups list from redux
-   */
-  const groups = useSelector((state: RootState) => state.group.groups);
+  console.log(groups);
 
   const onCreateGroup = () => {
     router.push(BASE_API_URL + Routes.createGroup());
@@ -41,16 +43,20 @@ const Groups = () => {
         onClickButton={onCreateGroup}
       />
 
-      <div className="grid grid-cols-1 gap-6">
-        {groups.map((group) => (
-          <GroupItem
-            key={group.id}
-            group={group}
-            expandedGroup={expandedGroup}
-            setExpandedGroup={setExpandedGroup}
-          />
-        ))}
-      </div>
+      {isEmptyArray(groups) ? (
+        <EmptyContent message="No groups yet. Create your first group to start splitting expenses." />
+      ) : (
+        <div className="grid grid-cols-1 gap-6">
+          {groups?.map((group) => (
+            <GroupItem
+              key={group._id}
+              group={group}
+              expandedGroup={expandedGroup}
+              setExpandedGroup={setExpandedGroup}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

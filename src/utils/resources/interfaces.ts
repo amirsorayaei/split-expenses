@@ -1,5 +1,4 @@
 export interface Group {
-  id?: number;
   name: string;
   currency: string;
   users: User[];

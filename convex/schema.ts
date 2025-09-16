@@ -14,7 +14,7 @@ export default defineSchema({
   ...authTables,
   // Groups table - stores group information and its members
   groups: defineTable({
-    title: v.string(),
+    name: v.string(),
     currency: v.string(),
     users: v.array(
       v.object({

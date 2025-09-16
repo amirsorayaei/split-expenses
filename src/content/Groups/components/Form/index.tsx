@@ -1,3 +1,4 @@
+"use client";
 import type React from "react";
 
 import { useEffect, useState } from "react";
@@ -8,7 +9,6 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -21,15 +21,15 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Users, Plus, X, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Group, User } from "@/src/utils/resources/interfaces";
-import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
+import type { Id } from "@/convex/_generated/dataModel";
+import { useRouter, useParams } from "next/navigation";
 import { store } from "@/src/redux/store";
-import { createGroup, updateGroup } from "@/src/redux/slices/groupSlice";
 import Snack from "@/src/components/Snack/Snack";
 import { getRandomPastelColor } from "@/lib/utils";
 import Currencies from "@/src/core/db/Currencies.json";
 import TextField from "@/src/components/TextField/TextField";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 interface Props {
   type: "create" | "edit";
@@ -37,20 +37,27 @@ interface Props {
 
 const GroupForm = ({ type }: Props) => {
   const [groupName, setGroupName] = useState("");
-  const [currency, setCurrency] = useState("");
+  const [currency, setCurrency] = useState("IRR");
   const [newUserName, setNewUserName] = useState("");
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<{ id: number; name: string }[]>([]);
   const [nextUserId, setNextUserId] = useState(1);
 
-  const dispatch = useDispatch();
+  const createGroup = useMutation(api.groups.create);
+  const updateGroup = useMutation(api.groups.update);
+
   const router = useRouter();
-  const { groupId = null } = router.query ?? {};
+  const params = useParams<{ groupId?: string }>();
+  const groupId = params?.groupId ?? null;
 
   useEffect(() => {
     if (type === "edit") {
       const selectedGroup = store
         .getState()
-        .group.groups.find((item) => item.id === groupId);
+        .group.groups.find((item) =>
+          groupId ? String(item.id) === groupId : false
+        );
+      // If your stored ids are numbers, compare as strings
+      // .find((item) => item.id?.toString() === groupId)
 
       if (selectedGroup) {
         setGroupName(selectedGroup.name);
@@ -72,20 +79,25 @@ const GroupForm = ({ type }: Props) => {
     setUsers(users.filter((user) => user.id !== userId));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const group: Group = {
-      id: groupId ? +groupId : undefined,
-      name: groupName,
-      currency,
-      users: users,
-    };
+    const now = Date.now();
+    const convexUsers = users.map((u) => ({
+      name: u.name,
+      isRegistered: false,
+      joinedAt: now,
+    }));
 
     if (type === "create") {
-      dispatch(createGroup(group));
-    } else {
-      dispatch(updateGroup(group));
+      await createGroup({ name: groupName, currency, users: convexUsers });
+    } else if (groupId) {
+      await updateGroup({
+        id: groupId as unknown as Id<"groups">,
+        name: groupName,
+        currency,
+        users: convexUsers,
+      });
     }
 
     // Then redirect or show success message
@@ -106,7 +118,7 @@ const GroupForm = ({ type }: Props) => {
         </div>
 
         <CardContent className="p-6 space-y-6">
-          <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <Label
                 htmlFor="groupName"
